@@ -68,7 +68,7 @@ const search = () => {
   height: 50px;
   width: 600px;
   border-radius: 25px;
-  background-color: white;
+  background-color: var(--color-search-bar);
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -126,7 +126,7 @@ const search = () => {
   width: fit-content;
   height: auto;
   border-radius: 15px;
-  background-color: white;
+  background-color: var(--color-search-option);
   padding: 0 5px;
   margin-left: 15px;
   display: flex;

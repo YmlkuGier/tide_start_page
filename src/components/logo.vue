@@ -11,6 +11,7 @@
 <style scoped>
 .logo-wrap {
   span {
+    color: var(--color-logo-font);
     font-size: 60px;
     font-family: JP_JaoKeShu, serif;
   }

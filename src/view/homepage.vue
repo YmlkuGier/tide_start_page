@@ -25,6 +25,8 @@ import Logo from "../components/logo.vue";
   align-items: center;
   flex-direction: column;
   gap: 10px;
+  padding-bottom: 100px;
+  box-sizing: border-box;
 }
 .setting-wrap {
   width: 40px;

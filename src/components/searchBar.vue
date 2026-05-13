@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {ref} from "vue";
 
+const isSearchOption = ref(false)
 const item = ref([
   {
     id: 'baidu',
@@ -22,17 +23,21 @@ const item = ref([
   }
 ])
 
+const openSearchOptions = () => {
+  isSearchOption.value = !isSearchOption.value
+}
+
 </script>
 
 <template>
   <div class="searchBar_wrap">
     <div class="searchBar">
-      <div class="icon_wrap">
+      <div class="icon_wrap" @click="openSearchOptions">
         <img src="../assets/search.svg" alt="">
       </div>
       <input id="input">
     </div>
-    <div class="option_wrap">
+    <div class="option_wrap" v-show="isSearchOption">
       <div class="opt" v-for="item in item" :key="item.id">
         <img :src="item.icon" alt="">
         <span>{{item.name}}</span>
@@ -69,9 +74,13 @@ const item = ref([
 .icon_wrap {
   width: 50px;
   height: 50px;
+  border-radius: 25px 0 0 25px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.icon_wrap:hover {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 #input {
   height: 100%;

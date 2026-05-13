@@ -81,7 +81,7 @@ const openSearchOptions = () => {
   justify-content: center;
 }
 .icon_wrap:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: var(--color-button-elevated);
 }
 #input {
   height: 100%;
@@ -136,6 +136,6 @@ const openSearchOptions = () => {
   }
 }
 .opt:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: var(--color-button-elevated);
 }
 </style>

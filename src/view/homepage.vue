@@ -34,6 +34,6 @@ import SearchBar from "../components/searchBar.vue";
   }
 }
 .setting-wrap:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: var(--color-button-elevated);
 }
 </style>

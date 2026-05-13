@@ -1,3 +1,5 @@
 :root {
-    --color-bg: #f9d2db
+    --color-bg: #f9d2db;
+
+    --color-button-elevated: rgba(0, 0, 0, 0.1)
 }

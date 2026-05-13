@@ -48,6 +48,7 @@ const openSearchOptions = () => {
 
 <style scoped>
 .searchBar_wrap {
+  position: relative;
   width: auto;
   height: auto;
   border-radius: 25px;
@@ -94,6 +95,10 @@ const openSearchOptions = () => {
   box-shadow: none;
 }
 .option_wrap {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  z-index: 10;
   min-width: 150px;
   max-width: 200px;
   width: fit-content;

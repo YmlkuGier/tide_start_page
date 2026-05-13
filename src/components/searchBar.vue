@@ -68,15 +68,22 @@ const search = () => {
   height: 50px;
   width: 600px;
   border-radius: 25px;
-  background-color: var(--color-search-bar);
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  background-color: rgba(17, 25, 40, 0.23);
+  border: 1px solid rgba(255, 255, 255, 0.125);
   img {
     width: 24px;
     margin-left: 10px;
     margin-right: 5px;
   }
+}
+#input {
+  background-color: rgba(255, 255, 255, 0);
+  border: 1px solid rgba(255, 255, 255, 0.125);
 }
 .icon_wrap {
   width: 50px;
@@ -126,7 +133,10 @@ const search = () => {
   width: fit-content;
   height: auto;
   border-radius: 15px;
-  background-color: var(--color-search-option);
+  backdrop-filter: blur(13px) saturate(162%);
+  -webkit-backdrop-filter: blur(13px) saturate(162%);
+  background-color: rgba(17, 25, 40, 0.23);
+  border: 1px solid rgba(255, 255, 255, 0.125);
   padding: 0 5px;
   margin-left: 15px;
   display: flex;
@@ -150,6 +160,7 @@ const search = () => {
     flex-shrink: 0;
   }
   span {
+    color: rgba(255, 255, 255, 0.92);
     font-size: 16px;
     max-width: calc(100% - 40px);
     overflow: hidden;

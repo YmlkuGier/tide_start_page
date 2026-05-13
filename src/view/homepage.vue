@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import SearchBar from "../components/searchBar.vue";
+import router from "../router";
 
 </script>
 
@@ -7,7 +8,7 @@ import SearchBar from "../components/searchBar.vue";
   <div class="main-wrap">
     <search-bar />
   </div>
-  <div class="setting-wrap">
+  <div class="setting-wrap" @click="router.push('/settings')">
     <img src="../assets/setting.svg" alt="">
   </div>
 </template>

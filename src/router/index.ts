@@ -1,11 +1,17 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Homepage from "../view/homepage.vue";
+import SettingsPage from "../view/SettingsPage.vue";
 
 const routes = [
     {
         path: '/',
         name: 'Homepage',
         component: Homepage
+    },
+    {
+        path: '/settings',
+        name: 'Settings',
+        component: SettingsPage
     }
 ]
 

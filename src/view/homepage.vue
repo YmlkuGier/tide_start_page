@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import SearchBar from "../components/searchBar.vue";
 import router from "../router";
+import Logo from "../components/logo.vue";
 
 </script>
 
 <template>
   <div class="main-wrap">
+    <logo />
     <search-bar />
   </div>
   <div class="setting-wrap" @click="router.push('/settings')">
@@ -21,6 +23,8 @@ import router from "../router";
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  gap: 10px;
 }
 .setting-wrap {
   width: 40px;

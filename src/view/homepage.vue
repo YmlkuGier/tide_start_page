@@ -6,6 +6,9 @@ import Logo from "../components/logo.vue";
 </script>
 
 <template>
+  <div class="background">
+    <img src="../assets/images/example.jpg" alt="">
+  </div>
   <div class="main-wrap">
     <logo />
     <search-bar />
@@ -19,7 +22,6 @@ import Logo from "../components/logo.vue";
 .main-wrap {
   width: 100%;
   height: 100vh;
-  background-color: var(--color-bg);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -27,6 +29,20 @@ import Logo from "../components/logo.vue";
   gap: 10px;
   padding-bottom: 100px;
   box-sizing: border-box;
+}
+.background {
+  z-index: -1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--color-bg);
+  img {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+  }
 }
 .setting-wrap {
   width: 40px;

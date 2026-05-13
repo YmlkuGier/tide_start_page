@@ -111,7 +111,6 @@ const openSearchOptions = () => {
   flex-direction: column;
   align-items: start;
   justify-content: center;
-  gap: 5px;
 }
 .opt {
   border-radius: 15px;

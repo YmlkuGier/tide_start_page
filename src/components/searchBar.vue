@@ -26,6 +26,9 @@ const item = ref([
 const openSearchOptions = () => {
   isSearchOption.value = !isSearchOption.value
 }
+const search = () => {
+
+}
 
 </script>
 
@@ -36,6 +39,9 @@ const openSearchOptions = () => {
         <img src="../assets/search.svg" alt="">
       </div>
       <input id="input">
+      <div id="search" @click="search">
+        <img src="../assets/arrow_right.svg" alt="">
+      </div>
     </div>
     <div class="option_wrap" v-show="isSearchOption">
       <div class="opt" v-for="item in item" :key="item.id">
@@ -85,7 +91,7 @@ const openSearchOptions = () => {
 }
 #input {
   height: 100%;
-  width: 400px;
+  flex: 1;
   padding: 0;
   font-size: 16px;
   font-weight: normal;
@@ -93,6 +99,22 @@ const openSearchOptions = () => {
   border: none;
   outline: none;
   box-shadow: none;
+}
+#search {
+  width: 60px;
+  height: 50px;
+  border-radius: 0 25px 25px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    width: 24px;
+    margin-left: 5px;
+    margin-right: 10px;
+  }
+}
+#search:hover {
+  background-color: var(--color-button-elevated);
 }
 .option_wrap {
   position: absolute;

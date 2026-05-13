@@ -37,4 +37,7 @@ import router from "../router";
 .setting-wrap:hover {
   background-color: var(--color-button-elevated);
 }
+img {
+  user-select: none;
+}
 </style>

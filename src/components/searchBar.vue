@@ -125,7 +125,7 @@ const openSearchOptions = () => {
   gap: 5px;
   img {
     width: 30px;
-    flex-shrink: 0
+    flex-shrink: 0;
   }
   span {
     font-size: 16px;
@@ -133,9 +133,13 @@ const openSearchOptions = () => {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    user-select: none;
   }
 }
 .opt:hover {
   background-color: var(--color-button-elevated);
+}
+img {
+  user-select: none;
 }
 </style>

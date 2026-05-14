@@ -14,6 +14,7 @@
     color: var(--color-logo-font);
     font-size: 60px;
     font-family: JP_JaoKeShu, serif;
+    user-select: none;
   }
 }
 </style>

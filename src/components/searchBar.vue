@@ -40,7 +40,7 @@ const settingSearchOptions = (id: string) => {
 const search = () => {
   if (!searchQuery.value.trim()) return
   if (searchURL.value) {
-    window.open(searchURL.value + encodeURIComponent(searchQuery.value), '_blank')
+    window.location.href = searchURL.value + encodeURIComponent(searchQuery.value)
   }
 }
 

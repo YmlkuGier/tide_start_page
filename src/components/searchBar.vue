@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import {ref} from "vue";
+import baiduIcon from '../assets/svg/search/baidu.svg?url'
+import bingIcon from '../assets/svg/search/bing.svg?url'
+import googleIcon from '../assets/svg/search/google.svg?url'
 
 const isSearchOption = ref(false)
 const item = ref([
@@ -7,19 +10,19 @@ const item = ref([
     id: 'baidu',
     name: '百度',
     url: 'https://www.baidu.com/s?wd=',
-    icon: 'https://www.baidu.com/favicon.ico'
+    icon: baiduIcon
   },
   {
     id: 'bing',
     name: '必应',
     url: 'https://www.bing.com/search?q=',
-    icon: 'https://www.bing.com/sa/simg/favicon-trans-bg-blue-mg-28.ico'
+    icon: bingIcon
   },
   {
     id: 'google',
     name: 'Google',
     url: 'https://www.google.com/search?q=',
-    icon: 'https://www.google.com/favicon.ico'
+    icon: googleIcon
   }
 ])
 
@@ -44,9 +47,9 @@ const search = () => {
       </div>
     </div>
     <div class="option_wrap" v-show="isSearchOption">
-      <div class="opt" v-for="item in item" :key="item.id">
-        <img :src="item.icon" alt="">
-        <span>{{item.name}}</span>
+      <div class="opt" v-for="engine in item" :key="engine.id">
+        <img :src="engine.icon" alt="">
+        <span>{{engine.name}}</span>
       </div>
     </div>
   </div>
@@ -157,7 +160,7 @@ const search = () => {
   gap: 5px;
   img {
     width: 30px;
-    flex-shrink: 0;
+    height: 30px;
   }
   span {
     color: rgba(255, 255, 255, 0.92);

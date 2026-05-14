@@ -7,5 +7,8 @@
     --color-search-option: #ffffff;
     --color-search-font: rgba(255, 255, 255, 0.92);
 
-    --color-button-elevated: rgba(0, 0, 0, 0.1)
+    --color-button-elevated: rgba(0, 0, 0, 0.1);
+
+    --color-settings-bg: #222222;
+    --color-settings-menu-bg: #4c4c4c
 }

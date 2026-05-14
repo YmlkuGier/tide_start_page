@@ -89,11 +89,19 @@ const search = () => {
   -webkit-backdrop-filter: blur(10px) saturate(180%);
   background-color: rgba(17, 25, 40, 0.23);
   border: 1px solid rgba(255, 255, 255, 0.125);
+  box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
+  transition: box-shadow 0.3s ease;
   img {
     width: 24px;
     margin-left: 10px;
     margin-right: 5px;
   }
+}
+.searchBar:hover {
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
+}
+.searchBar:focus-within {
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
 }
 #input {
   background-color: rgba(255, 255, 255, 0);

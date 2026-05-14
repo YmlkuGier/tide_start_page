@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import {ref} from "vue";
-import baiduIcon from '../assets/svg/search/baidu.svg?url'
-import bingIcon from '../assets/svg/search/bing.svg?url'
-import googleIcon from '../assets/svg/search/google.svg?url'
+import baiduIcon from '../assets/svg/searchBar/engine/baidu.svg?url'
+import bingIcon from '../assets/svg/searchBar/engine/bing.svg?url'
+import googleIcon from '../assets/svg/searchBar/engine/google.svg?url'
 
 const isSearchOption = ref(false)
 const searchQuery = ref('')
@@ -54,7 +54,7 @@ const search = () => {
       </div>
       <input id="input" v-model="searchQuery" placeholder="输入搜索内容" @keyup.enter="search" autocomplete="off">
       <div id="search" @click="search">
-        <img src="../assets/arrow_right.svg" alt="">
+        <img src="../assets/svg/searchBar/arrow_right.svg" alt="">
       </div>
     </div>
     <div class="option_wrap" v-show="isSearchOption">

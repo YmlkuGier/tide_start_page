@@ -14,7 +14,7 @@ import Logo from "../components/logo.vue";
     <search-bar />
   </div>
   <div class="setting-wrap" @click="router.push('/settings')">
-    <img src="../assets/setting.svg" alt="">
+    <img src="../assets/svg/setting.svg" alt="">
   </div>
 </template>
 

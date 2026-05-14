@@ -1,10 +1,11 @@
 :root {
     --color-logo-font: #000000;
 
-    --color-bg: #f9d2db;
+    --color-bg: #d2f9f9;
 
     --color-search-bar: #ffffff;
     --color-search-option: #ffffff;
+    --color-search-font: rgba(255, 255, 255, 0.92);
 
     --color-button-elevated: rgba(0, 0, 0, 0.1)
 }

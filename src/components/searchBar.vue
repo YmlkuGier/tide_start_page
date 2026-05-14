@@ -87,6 +87,7 @@ const search = () => {
 #input {
   background-color: rgba(255, 255, 255, 0);
   border: 1px solid rgba(255, 255, 255, 0.125);
+  color: var(--color-search-font);
 }
 .icon_wrap {
   width: 50px;

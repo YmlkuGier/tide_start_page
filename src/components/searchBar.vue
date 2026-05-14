@@ -5,7 +5,10 @@ import bingIcon from '../assets/svg/search/bing.svg?url'
 import googleIcon from '../assets/svg/search/google.svg?url'
 
 const isSearchOption = ref(false)
-const item = ref([
+const searchQuery = ref('')
+const searchOptionID = ref('bing')
+const searchURL = ref('https://www.bing.com/search?q=')
+const searchItem = ref([
   {
     id: 'baidu',
     name: '百度',
@@ -29,8 +32,16 @@ const item = ref([
 const openSearchOptions = () => {
   isSearchOption.value = !isSearchOption.value
 }
+const settingSearchOptions = (id: string) => {
+  searchOptionID.value = id
+  searchURL.value = searchItem.value.find(item => item.id === id)?.url || ''
+  isSearchOption.value = false
+}
 const search = () => {
-
+  if (!searchQuery.value.trim()) return
+  if (searchURL.value) {
+    window.open(searchURL.value + encodeURIComponent(searchQuery.value), '_blank')
+  }
 }
 
 </script>
@@ -39,17 +50,17 @@ const search = () => {
   <div class="searchBar_wrap">
     <div class="searchBar">
       <div class="icon_wrap" @click="openSearchOptions">
-        <img src="../assets/search.svg" alt="">
+        <img :src="searchItem.find(item => item.id === searchOptionID)?.icon" alt="">
       </div>
-      <input id="input">
+      <input id="input" v-model="searchQuery" placeholder="输入搜索内容" @keyup.enter="search" autocomplete="off">
       <div id="search" @click="search">
         <img src="../assets/arrow_right.svg" alt="">
       </div>
     </div>
     <div class="option_wrap" v-show="isSearchOption">
-      <div class="opt" v-for="engine in item" :key="engine.id">
-        <img :src="engine.icon" alt="">
-        <span>{{engine.name}}</span>
+      <div class="opt" v-for="item in searchItem" :key="item.id" @click="settingSearchOptions(item.id)">
+        <img :src="item.icon" alt="">
+        <span>{{item.name}}</span>
       </div>
     </div>
   </div>
@@ -88,6 +99,9 @@ const search = () => {
   background-color: rgba(255, 255, 255, 0);
   border: 1px solid rgba(255, 255, 255, 0.125);
   color: var(--color-search-font);
+}
+#input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
 }
 .icon_wrap {
   width: 50px;

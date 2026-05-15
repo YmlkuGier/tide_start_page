@@ -3,7 +3,9 @@
 </script>
 
 <template>
-<h1>aboutPage</h1>
+  <div class="setting-content-wrap">
+
+  </div>
 </template>
 
 <style scoped>

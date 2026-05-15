@@ -32,6 +32,7 @@ const menuList = [
   display: flex;
 }
 #left-menu {
+  min-width: 180px;
   width: 250px;
   height: 100%;
   display: flex;
@@ -40,5 +41,10 @@ const menuList = [
 }
 #setting-main-wrap {
   flex: 1;
+  padding-right: 10%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 </style>

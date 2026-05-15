@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Homepage from "../view/homepage.vue";
 import SettingsPage from "../view/SettingsPage.vue";
+import AboutPage from "@/view/setting/aboutPage.vue";
 
 const routes = [
     {
@@ -11,7 +12,15 @@ const routes = [
     {
         path: '/settings',
         name: 'Settings',
-        component: SettingsPage
+        component: SettingsPage,
+        redirect: '/settings/about',
+        children: [
+            {
+                path: 'about',
+                name: 'about',
+                component: AboutPage
+            }
+        ]
     }
 ]
 

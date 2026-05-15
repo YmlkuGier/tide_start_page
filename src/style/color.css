@@ -10,5 +10,7 @@
     --color-button-elevated: rgba(0, 0, 0, 0.1);
 
     --color-settings-bg: #222222;
-    --color-settings-menu-bg: #4c4c4c
+    --color-settings-menu-bg: #2222222;
+    --color-settings-menu-elevated: #333333;
+    --color-settings-menu-font: #ffffff;
 }

@@ -2,12 +2,12 @@
 const props = defineProps({
   title: String,
   icon: String,
-  url: String
+  pathName: String
 })
 </script>
 
 <template>
-  <div class="menu-item-wrap" @click="$router.push(props.url ? props.url : '/')">
+  <div class="menu-item-wrap" @click="$router.push({ name: props.pathName })">
     <img class="menu-item-icon" :src="props.icon" alt="">
     <div class="menu-item-title">{{ props.title }}</div>
   </div>
@@ -31,8 +31,10 @@ const props = defineProps({
   width: 20px;
   height: 20px;
   margin-right: 10px;
+  user-select: none;
 }
 .menu-item-title {
   color: var(--color-settings-menu-font);
+  user-select: none;
 }
 </style>

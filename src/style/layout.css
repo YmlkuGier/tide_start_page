@@ -1,0 +1,32 @@
+.setting-content-wrap {
+    width: 700px;
+    height: auto;
+    padding: 50px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.setting-form-wrap {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+}
+.setting-form-title-wrap {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    font-size: 18px;
+    color: var(--color-settings-form-title);
+    margin-left: 5px;
+}
+.setting-form-content-wrap {
+    padding: 16px 20px;
+    background-color: var(--color-settings-form-bg);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}

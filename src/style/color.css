@@ -13,4 +13,7 @@
     --color-settings-menu-bg: #2222222;
     --color-settings-menu-elevated: #333333;
     --color-settings-menu-font: #ffffff;
+    --color-settings-form-bg: #444444;
+    --color-settings-form-title: #ffffff;
+    --color-settings-form-content: #ffffffcc;
 }

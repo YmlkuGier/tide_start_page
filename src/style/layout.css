@@ -6,3 +6,23 @@
     flex-direction: column;
     gap: 15px;
 }
+.setting-form-wrap {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+}
+.setting-form-title-wrap {
+    font-size: 18px;
+    color: var(--color-settings-form-title);
+    margin-left: 5px;
+}
+.setting-form-content-wrap {
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #444444;
+    border-radius: 10px;
+    height: auto;
+}

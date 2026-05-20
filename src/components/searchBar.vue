@@ -87,6 +87,8 @@ const search = () => {
   justify-content: flex-start;
   backdrop-filter: blur(10px) saturate(180%);
   -webkit-backdrop-filter: blur(10px) saturate(180%);
+  transform: translateZ(0);
+  isolation: isolate;
   background-color: rgba(17, 25, 40, 0.23);
   border: 1px solid rgba(255, 255, 255, 0.125);
   box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);

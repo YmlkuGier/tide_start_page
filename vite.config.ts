@@ -9,5 +9,11 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src')
     }
+  },
+  // 解决扩展空白/路径错误
+  base: './',
+  build: {
+    outDir: 'dist',
+    cssMinify: 'esbuild'
   }
 })

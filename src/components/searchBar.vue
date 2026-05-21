@@ -121,13 +121,14 @@ const search = () => {
 #input {
   height: 100%;
   flex: 1;
-  padding: 0;
+  padding-top: 3px;
   font-size: 16px;
   font-weight: normal;
   -webkit-text-stroke: 0.5px transparent;
   border: none;
   outline: none;
   box-shadow: none;
+  box-sizing: border-box;
 }
 #search {
   width: 60px;

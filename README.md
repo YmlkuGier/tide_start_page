@@ -30,7 +30,7 @@
 
 1. **克隆项目**
    ```bash
-    git clone https://github.com/YmlkuGier/Tide_Type26_chaoxing
+    git clone https://gitee.com/ymlku/tide_start_page.git
     cd tide_start_page
     ```
 2. **安装依赖**

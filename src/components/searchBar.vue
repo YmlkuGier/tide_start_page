@@ -48,7 +48,7 @@ const search = () => {
 
 <template>
   <div class="searchBar_wrap">
-    <div class="searchBar">
+    <div class="searchBar frosted-glass-show">
       <div class="icon_wrap" @click="openSearchOptions">
         <img :src="searchItem.find(item => item.id === searchOptionID)?.icon" alt="">
       </div>
@@ -57,7 +57,7 @@ const search = () => {
         <img src="../assets/svg/searchBar/arrow_right.svg" alt="">
       </div>
     </div>
-    <div class="option_wrap" v-show="isSearchOption">
+    <div class="option_wrap frosted-glass-show" v-show="isSearchOption">
       <div class="opt" v-for="item in searchItem" :key="item.id" @click="settingSearchOptions(item.id)">
         <img :src="item.icon" alt="">
         <span>{{item.name}}</span>
@@ -84,13 +84,7 @@ const search = () => {
   border-radius: 25px;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  backdrop-filter: blur(10px) saturate(180%);
-  -webkit-backdrop-filter: blur(10px) saturate(180%);
-  transform: translateZ(0);
-  isolation: isolate;
   background-color: rgba(17, 25, 40, 0.23);
-  border: 1px solid rgba(255, 255, 255, 0.125);
   box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
   transition: box-shadow 0.3s ease;
   img {
@@ -161,10 +155,7 @@ const search = () => {
   width: fit-content;
   height: auto;
   border-radius: 15px;
-  backdrop-filter: blur(13px) saturate(162%);
-  -webkit-backdrop-filter: blur(13px) saturate(162%);
   background-color: rgba(17, 25, 40, 0.23);
-  border: 1px solid rgba(255, 255, 255, 0.125);
   padding: 0 5px;
   margin-left: 15px;
   display: flex;

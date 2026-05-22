@@ -50,6 +50,13 @@ const mobileComponents = (direction : boolean) => {
     duration: 0.5,
     ease: "power2.out",
   });
+  gsap.to(".suggest-list-wrap",{
+    opacity: direction ? 1 : 0,
+    pointerEvents: direction ? "auto" : "none",
+    y: direction ? -20 : 0,
+    duration: 0.5,
+    ease: "power2.out"
+  });
 }
 
 const openSearchOptions = () => {
@@ -90,7 +97,7 @@ watch(searchVal, getSuggest)
           placeholder="输入搜索内容"
           @keyup.enter="search"
           autocomplete="off"
-          @focus="mobileComponents(true)"
+          @focus="mobileComponents(true);"
       >
       <div id="search" @click="search">
         <img src="../assets/svg/searchBar/arrow_right.svg" alt="">
@@ -247,12 +254,15 @@ img {
   left: 0;
   z-index: 9;
   padding: 10px 3px;
+  margin-top: 20px;
   box-sizing: border-box;
   width: 100%;
   background-color: rgba(17, 25, 40, 0.23);
   border-radius: 25px;
   display: flex;
   flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
 }
 .suggest-list-item-wrap {
   height: 40px;

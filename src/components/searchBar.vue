@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import baiduIcon from '../assets/svg/searchBar/engine/baidu.svg?url'
 import bingIcon from '../assets/svg/searchBar/engine/bing.svg?url'
 import googleIcon from '../assets/svg/searchBar/engine/google.svg?url'
 import gsap from 'gsap';
+import _ from "lodash";
 import {useClickOutside} from "@/utils/util.ts";
 
 const searchBarWrapRef = ref<HTMLElement | null>(null)
@@ -31,6 +32,16 @@ const searchItem = ref([
     icon: googleIcon
   }
 ])
+const suggestList = ref([
+    "模拟数据1",
+    "模拟数据2",
+    "模拟数据3",
+    "模拟数据4",
+    "模拟数据5",
+    "模拟数据6",
+    "模拟数据7",
+    "模拟数据8",
+])
 
 const mobileComponents = (direction : boolean) => {
   // true是向上移动,false是向下移动
@@ -55,11 +66,16 @@ const search = () => {
     window.location.href = searchURL.value + encodeURIComponent(searchVal.value)
   }
 }
+const getSuggest = _.debounce((val: string) => {
+  if (!val) return
+  console.log(val)
+}, 200)
 
 useClickOutside(searchBarWrapRef, () => {
   mobileComponents(false)
   isSearchOption.value = false
 })
+watch(searchVal, getSuggest)
 </script>
 
 <template>
@@ -78,6 +94,13 @@ useClickOutside(searchBarWrapRef, () => {
       >
       <div id="search" @click="search">
         <img src="../assets/svg/searchBar/arrow_right.svg" alt="">
+      </div>
+    </div>
+    <div class="suggest-list-wrap frosted-glass-show" v-show="suggestList.length">
+      <div class="suggest-list-item-wrap" v-for="item in suggestList">
+        <div class="suggest-list-item">
+          {{item}}
+        </div>
       </div>
     </div>
     <div class="option_wrap frosted-glass-show" v-show="isSearchOption">
@@ -217,5 +240,33 @@ useClickOutside(searchBarWrapRef, () => {
 }
 img {
   user-select: none;
+}
+.suggest-list-wrap {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  z-index: 9;
+  padding: 10px 3px;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: rgba(17, 25, 40, 0.23);
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+}
+.suggest-list-item-wrap {
+  height: 40px;
+  width: 100%;
+  border-radius: 15px;
+  padding: 0 15px;
+  box-sizing: border-box;
+  color: var(--color-search-suggest-font);
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+.suggest-list-item-wrap:hover {
+  cursor: pointer;
+  background-color: var(--color-button-elevated);
 }
 </style>

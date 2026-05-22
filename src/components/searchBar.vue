@@ -3,9 +3,12 @@ import {ref} from "vue";
 import baiduIcon from '../assets/svg/searchBar/engine/baidu.svg?url'
 import bingIcon from '../assets/svg/searchBar/engine/bing.svg?url'
 import googleIcon from '../assets/svg/searchBar/engine/google.svg?url'
+import gsap from 'gsap';
+import {useClickOutside} from "@/utils/util.ts";
 
+const searchBarWrapRef = ref<HTMLElement | null>(null)
 const isSearchOption = ref(false)
-const searchQuery = ref('')
+const searchVal = ref('')
 const searchOptionID = ref('bing')
 const searchURL = ref('https://www.bing.com/search?q=')
 const searchItem = ref([
@@ -29,6 +32,15 @@ const searchItem = ref([
   }
 ])
 
+const mobileComponents = (direction : boolean) => {
+  // true是向上移动,false是向下移动
+  gsap.to(".main-wrap", {
+    y: direction ? -150 : 0,
+    duration: 0.5,
+    ease: "power2.out",
+  });
+}
+
 const openSearchOptions = () => {
   isSearchOption.value = !isSearchOption.value
 }
@@ -38,21 +50,32 @@ const settingSearchOptions = (id: string) => {
   isSearchOption.value = false
 }
 const search = () => {
-  if (!searchQuery.value.trim()) return
+  if (!searchVal.value.trim()) return
   if (searchURL.value) {
-    window.location.href = searchURL.value + encodeURIComponent(searchQuery.value)
+    window.location.href = searchURL.value + encodeURIComponent(searchVal.value)
   }
 }
 
+useClickOutside(searchBarWrapRef, () => {
+  mobileComponents(false)
+  isSearchOption.value = false
+})
 </script>
 
 <template>
-  <div class="searchBar_wrap">
+  <div class="searchBar_wrap" ref="searchBarWrapRef">
     <div class="searchBar frosted-glass-show">
       <div class="icon_wrap" @click="openSearchOptions">
         <img :src="searchItem.find(item => item.id === searchOptionID)?.icon" alt="">
       </div>
-      <input id="input" v-model="searchQuery" placeholder="输入搜索内容" @keyup.enter="search" autocomplete="off">
+      <input
+          id="input"
+          v-model="searchVal"
+          placeholder="输入搜索内容"
+          @keyup.enter="search"
+          autocomplete="off"
+          @focus="mobileComponents(true)"
+      >
       <div id="search" @click="search">
         <img src="../assets/svg/searchBar/arrow_right.svg" alt="">
       </div>

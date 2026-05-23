@@ -32,16 +32,7 @@ const searchItem = ref([
     icon: googleIcon
   }
 ])
-const suggestList = ref([
-    "模拟数据1",
-    "模拟数据2",
-    "模拟数据3",
-    "模拟数据4",
-    "模拟数据5",
-    "模拟数据6",
-    "模拟数据7",
-    "模拟数据8",
-])
+const suggestList = ref([])
 
 const mobileComponents = (direction : boolean) => {
   // true是向上移动,false是向下移动
@@ -73,9 +64,35 @@ const search = () => {
     window.location.href = searchURL.value + encodeURIComponent(searchVal.value)
   }
 }
-const getSuggest = _.debounce((val: string) => {
-  if (!val) return
-  console.log(val)
+const getSuggest = _.debounce(async (val: string) => {
+  if (!val) {
+    suggestList.value = []
+    return
+  }
+  try {
+    const res = await fetch(
+        `/baidu/su?wd=${encodeURIComponent(val)}`
+    )
+    // 手动解码来处理 GBK 编码
+    const buffer = await res.arrayBuffer()
+    const bytes = new Uint8Array(buffer)
+    let text: string
+    try {
+      const decoder = new TextDecoder('gbk')
+      text = decoder.decode(bytes)
+    } catch (e) {
+      // 如果浏览器不支持 GBK 解码器，使用默认方式
+      const blob = new Blob([bytes])
+      text = await blob.text()
+    }
+    console.log(text)
+    const start = text.indexOf('[')
+    const end = text.lastIndexOf(']') + 1
+    suggestList.value = JSON.parse(text.slice(start, end))
+  } catch (error) {
+    console.error('获取搜索建议失败:', error)
+    suggestList.value = []
+  }
 }, 200)
 
 useClickOutside(searchBarWrapRef, () => {

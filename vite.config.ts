@@ -15,5 +15,14 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     cssMinify: 'esbuild'
+  },
+  server: {
+    proxy: {
+      '/baidu': {
+        target: 'https://suggestion.baidu.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/baidu/, ''),
+      }
+    }
   }
 })

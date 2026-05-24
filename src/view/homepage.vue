@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SearchBar from "../components/searchBar.vue";
+import SearchBar from "../components/searchBar/searchBar.vue";
 import router from "../router";
 import Logo from "../components/logo.vue";
 

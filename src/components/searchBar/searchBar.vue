@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import {ref, watch} from "vue";
-import baiduIcon from '../assets/svg/searchBar/engine/baidu.svg?url'
-import bingIcon from '../assets/svg/searchBar/engine/bing.svg?url'
-import googleIcon from '../assets/svg/searchBar/engine/google.svg?url'
+import {ref} from "vue";
+import baiduIcon from '../../assets/svg/searchBar/engine/baidu.svg?url'
+import bingIcon from '../../assets/svg/searchBar/engine/bing.svg?url'
+import googleIcon from '../../assets/svg/searchBar/engine/google.svg?url'
+import suggestList from "./suggestList.vue";
 import gsap from 'gsap';
-import _ from "lodash";
 import {useClickOutside} from "@/utils/util.ts";
 
 const searchBarWrapRef = ref<HTMLElement | null>(null)
@@ -32,7 +32,6 @@ const searchItem = ref([
     icon: googleIcon
   }
 ])
-const suggestList = ref([])
 
 const mobileComponents = (direction : boolean) => {
   // true是向上移动,false是向下移动
@@ -64,42 +63,10 @@ const search = () => {
     window.location.href = searchURL.value + encodeURIComponent(searchVal.value)
   }
 }
-const getSuggest = _.debounce(async (val: string) => {
-  if (!val) {
-    suggestList.value = []
-    return
-  }
-  try {
-    const res = await fetch(
-        `/baidu/su?wd=${encodeURIComponent(val)}`
-    )
-    // 手动解码来处理 GBK 编码
-    const buffer = await res.arrayBuffer()
-    const bytes = new Uint8Array(buffer)
-    let text: string
-    try {
-      const decoder = new TextDecoder('gbk')
-      text = decoder.decode(bytes)
-    } catch (e) {
-      // 如果浏览器不支持 GBK 解码器，使用默认方式
-      const blob = new Blob([bytes])
-      text = await blob.text()
-    }
-    console.log(text)
-    const start = text.indexOf('[')
-    const end = text.lastIndexOf(']') + 1
-    suggestList.value = JSON.parse(text.slice(start, end))
-  } catch (error) {
-    console.error('获取搜索建议失败:', error)
-    suggestList.value = []
-  }
-}, 200)
-
 useClickOutside(searchBarWrapRef, () => {
   mobileComponents(false)
   isSearchOption.value = false
 })
-watch(searchVal, getSuggest)
 </script>
 
 <template>
@@ -117,16 +84,13 @@ watch(searchVal, getSuggest)
           @focus="mobileComponents(true);"
       >
       <div id="search" @click="search">
-        <img src="../assets/svg/searchBar/arrow_right.svg" alt="">
+        <img src="../../assets/svg/searchBar/arrow_right.svg" alt="">
       </div>
     </div>
-    <div class="suggest-list-wrap frosted-glass-show" v-show="suggestList.length">
-      <div class="suggest-list-item-wrap" v-for="item in suggestList" @click="searchVal = item; search()">
-        <div class="suggest-list-item">
-          {{item}}
-        </div>
-      </div>
-    </div>
+    <suggest-list
+        v-model:search-val="searchVal"
+        @search="search"
+    />
     <div class="option_wrap frosted-glass-show" v-show="isSearchOption">
       <div class="opt" v-for="item in searchItem" :key="item.id" @click="settingSearchOptions(item.id)">
         <img :src="item.icon" alt="">
@@ -264,36 +228,5 @@ watch(searchVal, getSuggest)
 }
 img {
   user-select: none;
-}
-.suggest-list-wrap {
-  position: absolute;
-  top: 60px;
-  left: 0;
-  z-index: 9;
-  padding: 10px 3px;
-  margin-top: 20px;
-  box-sizing: border-box;
-  width: 100%;
-  background-color: rgba(17, 25, 40, 0.23);
-  border-radius: 25px;
-  display: flex;
-  flex-direction: column;
-  opacity: 0;
-  pointer-events: none;
-}
-.suggest-list-item-wrap {
-  height: 40px;
-  width: 100%;
-  border-radius: 15px;
-  padding: 0 15px;
-  box-sizing: border-box;
-  color: var(--color-search-suggest-font);
-  display: flex;
-  align-items: center;
-  justify-content: start;
-}
-.suggest-list-item-wrap:hover {
-  cursor: pointer;
-  background-color: var(--color-button-elevated);
 }
 </style>

@@ -121,7 +121,7 @@ watch(searchVal, getSuggest)
       </div>
     </div>
     <div class="suggest-list-wrap frosted-glass-show" v-show="suggestList.length">
-      <div class="suggest-list-item-wrap" v-for="item in suggestList">
+      <div class="suggest-list-item-wrap" v-for="item in suggestList" @click="searchVal = item; search()">
         <div class="suggest-list-item">
           {{item}}
         </div>

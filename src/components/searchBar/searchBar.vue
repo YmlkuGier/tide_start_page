@@ -8,6 +8,7 @@ import gsap from 'gsap';
 import {useClickOutside} from "@/utils/util.ts";
 
 const searchBarWrapRef = ref<HTMLElement | null>(null)
+const suggestListRef = ref<InstanceType<typeof suggestList> | null>(null)
 const isSearchOption = ref(false)
 const searchVal = ref('')
 const searchOptionID = ref('bing')
@@ -63,6 +64,11 @@ const search = () => {
     window.location.href = searchURL.value + encodeURIComponent(searchVal.value)
   }
 }
+const handleKeyDown = (e: KeyboardEvent) => {
+  if (suggestListRef.value) {
+    suggestListRef.value.handleKeyDown(e)
+  }
+}
 useClickOutside(searchBarWrapRef, () => {
   mobileComponents(false)
   isSearchOption.value = false
@@ -80,14 +86,16 @@ useClickOutside(searchBarWrapRef, () => {
           v-model="searchVal"
           placeholder="输入搜索内容"
           @keyup.enter="search"
+          @keydown="handleKeyDown"
           autocomplete="off"
           @focus="mobileComponents(true);"
       >
       <div id="search" @click="search">
-        <img src="../../assets/svg/searchBar/arrow_right.svg" alt="">
+        <img src="@/assets/svg/searchBar/arrow_right.svg" alt="">
       </div>
     </div>
     <suggest-list
+        ref="suggestListRef"
         v-model:search-val="searchVal"
         @search="search"
     />

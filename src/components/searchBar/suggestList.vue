@@ -12,10 +12,12 @@ const search = (item: string) => {
 }
 
 const suggestList = ref([])
+const selectedIndex = ref(-1)
 
 const getSuggest = _.debounce(async (val: string) => {
   if (!val) {
     suggestList.value = []
+    selectedIndex.value = -1
     return
   }
   try {
@@ -38,20 +40,53 @@ const getSuggest = _.debounce(async (val: string) => {
     const start = text.indexOf('[')
     const end = text.lastIndexOf(']') + 1
     suggestList.value = JSON.parse(text.slice(start, end))
+    selectedIndex.value = -1
   } catch (error) {
     console.error('获取搜索建议失败:', error)
     suggestList.value = []
+    selectedIndex.value = -1
   }
 }, 200)
 
+const handleKeyDown = (e: KeyboardEvent) => {
+  if (!suggestList.value.length) return
+  switch(e.key) {
+    case 'ArrowDown':
+      e.preventDefault()
+      selectedIndex.value = (selectedIndex.value + 1) % suggestList.value.length
+      console.log(selectedIndex.value)
+      break
+    case 'ArrowUp':
+      e.preventDefault()
+      selectedIndex.value = selectedIndex.value <= 0 ? suggestList.value.length - 1 : selectedIndex.value - 1
+      console.log(selectedIndex.value)
+      break
+    case 'Enter':
+      if (selectedIndex.value >= 0 && selectedIndex.value < suggestList.value.length) {
+        e.preventDefault()
+        search(suggestList.value[selectedIndex.value])
+      }
+      break
+  }
+}
+
 watch(() => props.searchVal, (newVal) => {
   getSuggest(newVal)
+})
+defineExpose({
+  handleKeyDown
 })
 </script>
 
 <template>
   <div class="suggest-list-wrap frosted-glass-show" v-show="suggestList.length">
-    <div class="suggest-list-item-wrap" v-for="item in suggestList" @click="search(item)">
+    <div
+        class="suggest-list-item-wrap"
+        v-for="(item, index) in suggestList"
+        :class="{ 'selected': index === selectedIndex }"
+        @click="search(item)"
+        @mouseenter="selectedIndex = index"
+    >
       <div class="suggest-list-item">
         {{item}}
       </div>
@@ -87,7 +122,7 @@ watch(() => props.searchVal, (newVal) => {
   align-items: center;
   justify-content: start;
 }
-.suggest-list-item-wrap:hover {
+.suggest-list-item-wrap.selected{
   cursor: pointer;
   background-color: var(--color-button-elevated);
 }

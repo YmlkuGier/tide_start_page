@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {ref} from "vue";
-import baiduIcon from '../../assets/svg/searchBar/engine/baidu.svg?url'
-import bingIcon from '../../assets/svg/searchBar/engine/bing.svg?url'
-import googleIcon from '../../assets/svg/searchBar/engine/google.svg?url'
-import suggestList from "./suggestList.vue";
+import baiduIcon from '@/assets/svg/searchBar/engine/baidu.svg?url'
+import bingIcon from '@/assets/svg/searchBar/engine/bing.svg?url'
+import googleIcon from '@/assets/svg/searchBar/engine/google.svg?url'
+import suggestList from "@/components/searchBar/suggestList.vue";
 import gsap from 'gsap';
 import {useClickOutside} from "@/utils/util.ts";
 

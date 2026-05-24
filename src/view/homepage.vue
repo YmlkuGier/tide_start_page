@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import SearchBar from "../components/searchBar/searchBar.vue";
-import router from "../router";
-import Logo from "../components/logo.vue";
+import SearchBar from "@/components/searchBar/searchBar.vue";
+import router from "@/router";
+import Logo from "@/components/logo.vue";
 
 </script>
 
 <template>
   <div class="homepage-wrap">
     <div class="background">
-      <img src="../assets/images/example.jpg" alt="">
+      <img src="@/assets/images/example.jpg" alt="">
     </div>
     <div class="main-wrap">
       <logo />
       <search-bar />
     </div>
     <div class="setting-wrap" @click="router.push('/settings')">
-      <img src="../assets/svg/setting.svg" alt="">
+      <img src="@/assets/svg/setting.svg" alt="">
     </div>
   </div>
 </template>

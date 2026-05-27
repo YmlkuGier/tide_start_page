@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import TextForm from "@/components/settingPage/form/textForm.vue";
+
+let content = '汐式起始页(潮汐起始页)是支持高度自定义的浏览器起始页扩展插件, 可简洁, 可复杂. 后续功能正持续制作中, 敬请期待'
 </script>
 
 <template>
   <div class="setting-content-wrap">
-    <text-form title="关于此软件" content="汐式起始页是一个简洁的本地起始页应用，采用 Vue 3 + TypeScript + Vite 现代化技术栈开发。本软件致力于为用户提供清爽、高效的浏览器起始页体验，支持自定义搜索引擎和个性化设置。" />
+    <text-form title="关于此软件" :content="content" />
   </div>
 </template>
 

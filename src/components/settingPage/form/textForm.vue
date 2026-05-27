@@ -17,9 +17,14 @@ const props = defineProps({
 </template>
 
 <style scoped>
+span {
+  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-size: 18px;
+}
 .text {
   color: var(--color-settings-form-content);
   text-indent: 2ch;
   font-size: 15px;
+  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
 }
 </style>

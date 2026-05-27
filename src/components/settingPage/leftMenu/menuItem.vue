@@ -23,6 +23,7 @@ const props = defineProps({
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  cursor: pointer;
 }
 .menu-item-wrap:hover {
   background-color: var(--color-settings-menu-elevated);
@@ -36,5 +37,7 @@ const props = defineProps({
 .menu-item-title {
   color: var(--color-settings-menu-font);
   user-select: none;
+  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-size: 14px;
 }
 </style>

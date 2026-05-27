@@ -1,24 +1,31 @@
 <script setup lang="ts">
-import SearchBar from "../components/searchBar.vue";
-import router from "../router";
-import Logo from "../components/logo.vue";
+import SearchBar from "@/components/searchBar/searchBar.vue";
+import router from "@/router";
+import Logo from "@/components/logo.vue";
 
 </script>
 
 <template>
-  <div class="background">
-    <img src="../assets/images/example.jpg" alt="">
-  </div>
-  <div class="main-wrap">
-    <logo />
-    <search-bar />
-  </div>
-  <div class="setting-wrap" @click="router.push('/settings')">
-    <img src="../assets/svg/setting.svg" alt="">
+  <div class="homepage-wrap">
+    <div class="background">
+      <img src="@/assets/images/example.jpg" alt="">
+    </div>
+    <div class="main-wrap">
+      <logo />
+      <search-bar />
+    </div>
+    <div class="setting-wrap" @click="router.push('/settings')">
+      <img src="@/assets/svg/setting.svg" alt="">
+    </div>
   </div>
 </template>
 
 <style scoped>
+.homepage-wrap {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
 .main-wrap {
   width: 100%;
   height: 100vh;
@@ -51,6 +58,7 @@ import Logo from "../components/logo.vue";
   position: fixed;
   bottom: 20px;
   left: 20px;
+  cursor: pointer;
   img {
     width: 100%;
     height: 100%;

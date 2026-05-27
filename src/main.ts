@@ -3,6 +3,7 @@ import './style/color.css'
 import './style/fonts.css'
 import './style/layout.css'
 import './style/show.css'
+import './style/scrollbar.css'
 import router from "./router";
 import App from './App.vue'
 

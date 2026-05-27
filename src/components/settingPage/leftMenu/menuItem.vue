@@ -37,5 +37,7 @@ const props = defineProps({
 .menu-item-title {
   color: var(--color-settings-menu-font);
   user-select: none;
+  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-size: 14px;
 }
 </style>

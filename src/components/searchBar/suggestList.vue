@@ -158,4 +158,8 @@ defineExpose({
   cursor: pointer;
   background-color: var(--color-button-elevated);
 }
+.suggest-list-item {
+  font-size: 14px;
+  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+}
 </style>

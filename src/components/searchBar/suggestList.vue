@@ -99,7 +99,7 @@ defineExpose({
 
 <template>
   <div
-      class="suggest-list-wrap frosted-glass-show"
+      class="suggest-list-wrap frosted-glass-show scrollbar-style-1"
       v-show="suggestList.length"
       ref="suggestListRef"
   >
@@ -134,6 +134,7 @@ defineExpose({
   flex-direction: column;
   opacity: 0;
   pointer-events: none;
+  border: none;
 }
 .suggest-list-item-wrap {
   min-height: 40px;

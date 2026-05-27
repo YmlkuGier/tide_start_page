@@ -32,9 +32,13 @@ const getSuggest = _.debounce(async (val: string) => {
     return
   }
   try {
-    const res = await fetch(
-        `/baidu/su?wd=${encodeURIComponent(val)}`
-    )
+    const isExtension = window.location.protocol === 'chrome-extension:' ||
+        window.location.protocol === 'moz-extension:' ||
+        window.location.protocol === 'safari-extension:'
+    const apiUrl = isExtension
+        ? `https://suggestion.baidu.com/su?wd=${encodeURIComponent(val)}`
+        : `/baidu/su?wd=${encodeURIComponent(val)}`
+    const res = await fetch(apiUrl)
     // 手动解码来处理 GBK 编码
     const buffer = await res.arrayBuffer()
     const bytes = new Uint8Array(buffer)

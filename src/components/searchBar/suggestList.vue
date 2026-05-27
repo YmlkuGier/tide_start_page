@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import _ from "lodash";
-import {ref, watch} from "vue";
+import {nextTick, ref, watch} from "vue";
 
 const props = defineProps<{
   searchVal: string
@@ -13,6 +13,17 @@ const search = (item: string) => {
 
 const suggestList = ref([])
 const selectedIndex = ref(-1)
+const suggestListRef = ref<HTMLElement | null>(null)
+
+const adjustHeightToFitViewport = () => {
+  if (!suggestListRef.value) return
+  const viewportHeight = window.innerHeight
+  const rect = suggestListRef.value.getBoundingClientRect()
+  const bottomSpace = viewportHeight - rect.top
+  const maxHeight = Math.max(bottomSpace - 20, 100)
+  suggestListRef.value.style.maxHeight = `${maxHeight}px`
+  suggestListRef.value.style.overflowY = 'auto'
+}
 
 const getSuggest = _.debounce(async (val: string) => {
   if (!val) {
@@ -73,13 +84,25 @@ const handleKeyDown = (e: KeyboardEvent) => {
 watch(() => props.searchVal, (newVal) => {
   getSuggest(newVal)
 })
+watch(() => suggestList.value, () => {
+  if (suggestList.value.length > 0) {
+    nextTick(() => {
+      adjustHeightToFitViewport()
+    })
+  }
+})
+window.addEventListener('resize', adjustHeightToFitViewport)
 defineExpose({
   handleKeyDown
 })
 </script>
 
 <template>
-  <div class="suggest-list-wrap frosted-glass-show" v-show="suggestList.length">
+  <div
+      class="suggest-list-wrap frosted-glass-show"
+      v-show="suggestList.length"
+      ref="suggestListRef"
+  >
     <div
         class="suggest-list-item-wrap"
         v-for="(item, index) in suggestList"
@@ -113,7 +136,7 @@ defineExpose({
   pointer-events: none;
 }
 .suggest-list-item-wrap {
-  height: 40px;
+  min-height: 40px;
   width: 100%;
   border-radius: 15px;
   padding: 0 15px;

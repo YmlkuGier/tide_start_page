@@ -90,6 +90,7 @@ defineExpose({
       <div class="suggest-list-item">
         {{item}}
       </div>
+      <img src="@/assets/svg/searchBar/search.svg" alt="" v-show="index === selectedIndex">
     </div>
   </div>
 </template>
@@ -120,7 +121,10 @@ defineExpose({
   color: var(--color-search-suggest-font);
   display: flex;
   align-items: center;
-  justify-content: start;
+  justify-content: space-between;
+  img {
+    width: 20px;
+  }
 }
 .suggest-list-item-wrap.selected{
   cursor: pointer;

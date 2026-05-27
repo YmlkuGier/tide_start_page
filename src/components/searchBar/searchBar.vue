@@ -37,7 +37,7 @@ const searchItem = ref([
 const mobileComponents = (direction : boolean) => {
   // true是向上移动,false是向下移动
   gsap.to(".main-wrap", {
-    y: direction ? -150 : 0,
+    y: direction ? '-20%' : 0,
     duration: 0.5,
     ease: "power2.out",
   });

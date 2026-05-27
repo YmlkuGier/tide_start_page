@@ -23,6 +23,7 @@ const props = defineProps({
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  cursor: pointer;
 }
 .menu-item-wrap:hover {
   background-color: var(--color-settings-menu-elevated);

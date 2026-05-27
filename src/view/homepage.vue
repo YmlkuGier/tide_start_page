@@ -58,6 +58,7 @@ import Logo from "@/components/logo.vue";
   position: fixed;
   bottom: 20px;
   left: 20px;
+  cursor: pointer;
   img {
     width: 100%;
     height: 100%;

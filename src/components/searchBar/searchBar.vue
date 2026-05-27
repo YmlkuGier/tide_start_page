@@ -156,6 +156,7 @@ useClickOutside(searchBarWrapRef, () => {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 .icon_wrap:hover {
   background-color: var(--color-button-elevated);
@@ -179,6 +180,7 @@ useClickOutside(searchBarWrapRef, () => {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   img {
     width: 24px;
     margin-left: 5px;
@@ -217,6 +219,7 @@ useClickOutside(searchBarWrapRef, () => {
   align-items: center;
   justify-content: flex-start;
   gap: 5px;
+  cursor: pointer;
   img {
     width: 30px;
     height: 30px;

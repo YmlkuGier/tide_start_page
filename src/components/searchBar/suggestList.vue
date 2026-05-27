@@ -51,7 +51,6 @@ const getSuggest = _.debounce(async (val: string) => {
       const blob = new Blob([bytes])
       text = await blob.text()
     }
-    console.log(text)
     const start = text.indexOf('[')
     const end = text.lastIndexOf(']') + 1
     suggestList.value = JSON.parse(text.slice(start, end))
@@ -69,12 +68,10 @@ const handleKeyDown = (e: KeyboardEvent) => {
     case 'ArrowDown':
       e.preventDefault()
       selectedIndex.value = (selectedIndex.value + 1) % suggestList.value.length
-      console.log(selectedIndex.value)
       break
     case 'ArrowUp':
       e.preventDefault()
       selectedIndex.value = selectedIndex.value <= 0 ? suggestList.value.length - 1 : selectedIndex.value - 1
-      console.log(selectedIndex.value)
       break
     case 'Enter':
       if (selectedIndex.value >= 0 && selectedIndex.value < suggestList.value.length) {

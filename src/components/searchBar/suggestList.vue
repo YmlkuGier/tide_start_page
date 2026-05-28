@@ -14,6 +14,7 @@ const search = (item: string) => {
 const suggestList = ref([])
 const selectedIndex = ref(-1)
 const suggestListRef = ref<HTMLElement | null>(null)
+const isKeyboardNavigating = ref(false)
 
 const adjustHeightToFitViewport = () => {
   if (!suggestListRef.value) return
@@ -23,6 +24,16 @@ const adjustHeightToFitViewport = () => {
   const maxHeight = Math.max(bottomSpace - 20, 100)
   suggestListRef.value.style.maxHeight = `${maxHeight}px`
   suggestListRef.value.style.overflowY = 'auto'
+}
+
+const scrollToSelected = () => {
+  if (!suggestListRef.value || selectedIndex.value < 0) return
+  nextTick(() => {
+    const selectedElement = suggestListRef.value?.querySelector('.selected') as HTMLElement
+    if (selectedElement) {
+      selectedElement.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+    }
+  })
 }
 
 const getSuggest = _.debounce(async (val: string) => {
@@ -66,12 +77,16 @@ const handleKeyDown = (e: KeyboardEvent) => {
   if (!suggestList.value.length) return
   switch(e.key) {
     case 'ArrowDown':
-      e.preventDefault()
+      e.preventDefault();
+      isKeyboardNavigating.value = true
       selectedIndex.value = (selectedIndex.value + 1) % suggestList.value.length
+      scrollToSelected()
       break
     case 'ArrowUp':
-      e.preventDefault()
+      e.preventDefault();
+      isKeyboardNavigating.value = true
       selectedIndex.value = selectedIndex.value <= 0 ? suggestList.value.length - 1 : selectedIndex.value - 1
+      scrollToSelected()
       break
     case 'Enter':
       if (selectedIndex.value >= 0 && selectedIndex.value < suggestList.value.length) {
@@ -80,6 +95,10 @@ const handleKeyDown = (e: KeyboardEvent) => {
       }
       break
   }
+}
+const handleMouseMove = () => {
+  isKeyboardNavigating.value = false
+  selectedIndex.value = -1
 }
 
 watch(() => props.searchVal, (newVal) => {
@@ -103,13 +122,14 @@ defineExpose({
       class="suggest-list-wrap frosted-glass-show scrollbar-style-1"
       v-show="suggestList.length"
       ref="suggestListRef"
+      :class="{ 'keyboard-navigating': isKeyboardNavigating }"
+      @mousemove="handleMouseMove"
   >
     <div
         class="suggest-list-item-wrap"
         v-for="(item, index) in suggestList"
         :class="{ 'selected': index === selectedIndex }"
-        @click="search(item)"
-        @mouseenter="selectedIndex = index"
+        @click="selectedIndex = index; search(item)"
     >
       <div class="suggest-list-item">
         {{item}}
@@ -150,6 +170,10 @@ defineExpose({
   img {
     width: 20px;
   }
+}
+.suggest-list-wrap:not(.keyboard-navigating) .suggest-list-item-wrap:hover {
+  cursor: pointer;
+  background-color: var(--color-button-elevated);
 }
 .suggest-list-item-wrap.selected{
   cursor: pointer;

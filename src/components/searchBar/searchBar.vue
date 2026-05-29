@@ -3,12 +3,12 @@ import {ref} from "vue";
 import baiduIcon from '@/assets/svg/searchBar/engine/baidu.svg?url'
 import bingIcon from '@/assets/svg/searchBar/engine/bing.svg?url'
 import googleIcon from '@/assets/svg/searchBar/engine/google.svg?url'
-import suggestList from "@/components/searchBar/suggestList.vue";
+import SearchSuggestionContainer from "@/components/searchBar/SearchSuggestionContainer.vue";
 import gsap from 'gsap';
 import {useClickOutside} from "@/utils/util.ts";
 
 const searchBarWrapRef = ref<HTMLElement | null>(null)
-const suggestListRef = ref<InstanceType<typeof suggestList> | null>(null)
+const suggestListRef = ref<InstanceType<typeof SearchSuggestionContainer> | null>(null)
 const isSearchOption = ref(false)
 const searchVal = ref('')
 const searchOptionID = ref('bing')
@@ -94,7 +94,7 @@ useClickOutside(searchBarWrapRef, () => {
         <img src="@/assets/svg/searchBar/arrow_right.svg" alt="">
       </div>
     </div>
-    <suggest-list
+    <search-suggestion-container
         ref="suggestListRef"
         v-model:search-val="searchVal"
         @search="search"

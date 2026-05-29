@@ -1,97 +1,57 @@
 <script setup lang="ts">
-import _ from "lodash";
 import {nextTick, ref, watch} from "vue";
 
 const props = defineProps<{
-  searchVal: string
+  dataList: string[]
 }>()
-const emit = defineEmits(["update:searchVal", "search"])
+const emit = defineEmits(["update:dataList", "search"])
 const search = (item: string) => {
-  emit("update:searchVal", item)
-  emit("search")
+  emit("search", item)
 }
 
-const suggestList = ref([])
 const selectedIndex = ref(-1)
-const suggestListRef = ref<HTMLElement | null>(null)
 const isKeyboardNavigating = ref(false)
+const dataListRef = ref<HTMLElement | null>(null)
 
 const adjustHeightToFitViewport = () => {
-  if (!suggestListRef.value) return
+  if (!dataListRef.value) return
   const viewportHeight = window.innerHeight
-  const rect = suggestListRef.value.getBoundingClientRect()
+  const rect = dataListRef.value.getBoundingClientRect()
   const bottomSpace = viewportHeight - rect.top
   const maxHeight = Math.max(bottomSpace - 20, 100)
-  suggestListRef.value.style.maxHeight = `${maxHeight}px`
-  suggestListRef.value.style.overflowY = 'auto'
+  dataListRef.value.style.maxHeight = `${maxHeight}px`
+  dataListRef.value.style.overflowY = 'auto'
 }
 
 const scrollToSelected = () => {
-  if (!suggestListRef.value || selectedIndex.value < 0) return
+  if (!dataListRef.value || selectedIndex.value < 0) return
   nextTick(() => {
-    const selectedElement = suggestListRef.value?.querySelector('.selected') as HTMLElement
+    const selectedElement = dataListRef.value?.querySelector('.selected') as HTMLElement
     if (selectedElement) {
       selectedElement.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
     }
   })
 }
 
-const getSuggest = _.debounce(async (val: string) => {
-  if (!val) {
-    suggestList.value = []
-    selectedIndex.value = -1
-    return
-  }
-  try {
-    const isExtension = window.location.protocol === 'chrome-extension:' ||
-        window.location.protocol === 'moz-extension:' ||
-        window.location.protocol === 'safari-extension:'
-    const apiUrl = isExtension
-        ? `https://suggestion.baidu.com/su?wd=${encodeURIComponent(val)}`
-        : `/baidu/su?wd=${encodeURIComponent(val)}`
-    const res = await fetch(apiUrl)
-    // 手动解码来处理 GBK 编码
-    const buffer = await res.arrayBuffer()
-    const bytes = new Uint8Array(buffer)
-    let text: string
-    try {
-      const decoder = new TextDecoder('gbk')
-      text = decoder.decode(bytes)
-    } catch (e) {
-      // 如果浏览器不支持 GBK 解码器，使用默认方式
-      const blob = new Blob([bytes])
-      text = await blob.text()
-    }
-    const start = text.indexOf('[')
-    const end = text.lastIndexOf(']') + 1
-    suggestList.value = JSON.parse(text.slice(start, end))
-    selectedIndex.value = -1
-  } catch (error) {
-    console.error('获取搜索建议失败:', error)
-    suggestList.value = []
-    selectedIndex.value = -1
-  }
-}, 200)
-
 const handleKeyDown = (e: KeyboardEvent) => {
-  if (!suggestList.value.length) return
+  if (!props.dataList.length) return
   switch(e.key) {
     case 'ArrowDown':
       e.preventDefault();
       isKeyboardNavigating.value = true
-      selectedIndex.value = (selectedIndex.value + 1) % suggestList.value.length
+      selectedIndex.value = (selectedIndex.value + 1) % props.dataList.length
       scrollToSelected()
       break
     case 'ArrowUp':
       e.preventDefault();
       isKeyboardNavigating.value = true
-      selectedIndex.value = selectedIndex.value <= 0 ? suggestList.value.length - 1 : selectedIndex.value - 1
+      selectedIndex.value = selectedIndex.value <= 0 ? props.dataList.length - 1 : selectedIndex.value - 1
       scrollToSelected()
       break
     case 'Enter':
-      if (selectedIndex.value >= 0 && selectedIndex.value < suggestList.value.length) {
+      if (selectedIndex.value >= 0 && selectedIndex.value < props.dataList.length) {
         e.preventDefault()
-        search(suggestList.value[selectedIndex.value])
+        search(props.dataList[selectedIndex.value])
       }
       break
   }
@@ -101,11 +61,8 @@ const handleMouseMove = () => {
   selectedIndex.value = -1
 }
 
-watch(() => props.searchVal, (newVal) => {
-  getSuggest(newVal)
-})
-watch(() => suggestList.value, () => {
-  if (suggestList.value.length > 0) {
+watch(() => props.dataList, () => {
+  if (props.dataList.length > 0) {
     nextTick(() => {
       adjustHeightToFitViewport()
     })
@@ -120,16 +77,16 @@ defineExpose({
 <template>
   <div
       class="suggest-list-wrap frosted-glass-show scrollbar-style-1"
-      v-show="suggestList.length"
-      ref="suggestListRef"
+      v-show="props.dataList.length"
+      ref="dataListRef"
       :class="{ 'keyboard-navigating': isKeyboardNavigating }"
       @mousemove="handleMouseMove"
   >
     <div
         class="suggest-list-item-wrap"
-        v-for="(item, index) in suggestList"
+        v-for="(item, index) in props.dataList"
         :class="{ 'selected': index === selectedIndex }"
-        @click="selectedIndex = index; search(item)"
+        @click="search(item)"
     >
       <div class="suggest-list-item">
         {{item}}

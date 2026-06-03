@@ -21,7 +21,6 @@ const handleItemClick = (item: string) => {
   <div
       class="data-list-wrap frosted-glass-show scrollbar-style-1"
       v-show="props.dataList.length"
-      ref="dataListRef"
       :class="{ 'keyboard-navigating': props.isKeyboardNavigating }"
   >
     <div

@@ -3,12 +3,12 @@ import {ref} from "vue";
 import baiduIcon from '@/assets/svg/searchBar/engine/baidu.svg?url'
 import bingIcon from '@/assets/svg/searchBar/engine/bing.svg?url'
 import googleIcon from '@/assets/svg/searchBar/engine/google.svg?url'
-import suggestList from "@/components/searchBar/suggestList.vue";
+import SearchSuggestionContainer from "@/components/searchBar/SearchSuggestionContainer.vue";
 import gsap from 'gsap';
 import {useClickOutside} from "@/utils/util.ts";
 
 const searchBarWrapRef = ref<HTMLElement | null>(null)
-const suggestListRef = ref<InstanceType<typeof suggestList> | null>(null)
+const suggestListRef = ref<InstanceType<typeof SearchSuggestionContainer> | null>(null)
 const isSearchOption = ref(false)
 const searchVal = ref('')
 const searchOptionID = ref('bing')
@@ -34,20 +34,19 @@ const searchItem = ref([
   }
 ])
 
-const mobileComponents = (direction : boolean) => {
-  // true是向上移动,false是向下移动
+const animateSearchBar = (isOpen: boolean) => {
   gsap.to(".main-wrap", {
-    y: direction ? '-20%' : 0,
+    y: isOpen ? '-20%' : 0,
     duration: 0.5,
     ease: "power2.out",
-  });
-  gsap.to(".suggest-list-wrap",{
-    opacity: direction ? 1 : 0,
-    pointerEvents: direction ? "auto" : "none",
-    y: direction ? -20 : 0,
+  })
+  gsap.to(".data-list-wrap",{
+    opacity: isOpen ? 1 : 0,
+    pointerEvents: isOpen ? "auto" : "none",
+    y: isOpen ? -20 : 0,
     duration: 0.5,
     ease: "power2.out"
-  });
+  })
 }
 
 const openSearchOptions = () => {
@@ -66,11 +65,14 @@ const search = () => {
 }
 const handleKeyDown = (e: KeyboardEvent) => {
   if (suggestListRef.value) {
-    suggestListRef.value.handleKeyDown(e)
+    suggestListRef.value.handleKeyDownSelect(e)
   }
 }
+const handleInputFocus = () => {
+  animateSearchBar(true)
+}
 useClickOutside(searchBarWrapRef, () => {
-  mobileComponents(false)
+  animateSearchBar(false)
   isSearchOption.value = false
 })
 </script>
@@ -88,13 +90,13 @@ useClickOutside(searchBarWrapRef, () => {
           @keyup.enter="search"
           @keydown="handleKeyDown"
           autocomplete="off"
-          @focus="mobileComponents(true);"
+          @focus="handleInputFocus"
       >
       <div id="search" @click="search">
         <img src="@/assets/svg/searchBar/arrow_right.svg" alt="">
       </div>
     </div>
-    <suggest-list
+    <search-suggestion-container
         ref="suggestListRef"
         v-model:search-val="searchVal"
         @search="search"

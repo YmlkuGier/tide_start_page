@@ -3,12 +3,15 @@ import {nextTick, type Ref} from "vue"
 export function useViewportHeight(containerRef: Ref<HTMLElement | null>) {
     const adjustHeightToFitViewport = () => {
         if (!containerRef.value) return
+        // 处理组件实例的情况，通过 $el 获取实际 DOM 元素
+        const element = (containerRef.value as any).$el || containerRef.value
+        if (!(element instanceof HTMLElement)) return
         const viewportHeight = window.innerHeight
-        const rect = containerRef.value.getBoundingClientRect()
+        const rect = element.getBoundingClientRect()
         const bottomSpace = viewportHeight - rect.top
         const maxHeight = Math.max(bottomSpace - 20, 100)
-        containerRef.value.style.maxHeight = `${maxHeight}px`
-        containerRef.value.style.overflowY = 'auto'
+        element.style.maxHeight = `${maxHeight}px`
+        element.style.overflowY = 'auto'
     }
 
     const initHeightAdjustment = () => {

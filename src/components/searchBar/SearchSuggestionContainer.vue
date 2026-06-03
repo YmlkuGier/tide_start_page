@@ -3,6 +3,7 @@ import {useSearchSuggestion} from "@/composables/useSearchSuggestion.ts";
 import {onBeforeUnmount, onMounted, ref, watch} from "vue";
 import {useViewportHeight} from "@/composables/useViewportHeight.ts";
 import {useKeyboardNavigation} from "@/composables/useKeyboardNavigation.ts";
+import {useMouseNavigation} from "@/composables/useMouseNavigation.ts";
 import DropdownBlock from "@/components/searchBar/DropdownBlock.vue";
 
 const props = defineProps<{
@@ -19,19 +20,33 @@ const handleSelect = (item: string) => {
   emit("update:searchVal", item)
   emit("search")
 }
-const {selectedIndex, isKeyboardNavigating, handleKeyDown, handleMouseMove, resetSelection} = useKeyboardNavigation({
+const {keyboardSelectedIndex, isKeyboardNavigating, handleKeyDown, setKeyboardSelectedIndex, resetKeyboardSelection} = useKeyboardNavigation({
   dataList: suggestList,
   containerRef: dropdownContainerRef,
-  onSelect: handleSelect
+  onSelect: handleSelect,
 })
+const {mouseSelectedIndex, setMouseSelectedIndex, resetMouseSelection} = useMouseNavigation()
 
 const handleResize = () => {
   adjustHeightToFitViewport()
 }
 
+const setSelectedIndex = (index: number) => {
+  resetKeyboardSelection()
+  setMouseSelectedIndex(index)
+}
+
+const handleKeyDownSelect = (e: KeyboardEvent) => {
+  if (keyboardSelectedIndex.value === -1) {
+    setKeyboardSelectedIndex(mouseSelectedIndex.value)
+    resetMouseSelection()
+  }
+  handleKeyDown(e)
+}
+
 watch(() => props.searchVal, (newVal) => {
   getSuggest(newVal)
-  resetSelection()
+  resetKeyboardSelection()
 })
 watch(suggestList, (newList) => {
   if (newList.length > 0) {
@@ -48,7 +63,7 @@ onBeforeUnmount(() => {
 })
 
 defineExpose({
-  handleKeyDown
+  handleKeyDownSelect
 })
 </script>
 
@@ -56,10 +71,11 @@ defineExpose({
   <dropdown-block
       ref="dropdownContainerRef"
       :data-list="suggestList"
-      :selected-index="selectedIndex"
+      :keyboard-selected-index="keyboardSelectedIndex"
+      :mouse-selected-index="mouseSelectedIndex"
       :is-keyboard-navigating="isKeyboardNavigating"
       @select="handleSelect"
-      @mouse-move="handleMouseMove"
+      @item-hover="setSelectedIndex"
   />
 </template>
 

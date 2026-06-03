@@ -65,7 +65,7 @@ const search = () => {
 }
 const handleKeyDown = (e: KeyboardEvent) => {
   if (suggestListRef.value) {
-    suggestListRef.value.handleKeyDown(e)
+    suggestListRef.value.handleKeyDownSelect(e)
   }
 }
 const handleInputFocus = () => {

@@ -1,22 +1,20 @@
 <script setup lang="ts">
 const props = defineProps<{
   dataList: string[]
-  selectedIndex: number
+  keyboardSelectedIndex: number
+  mouseSelectedIndex: number
   isKeyboardNavigating: boolean
 }>()
 
 const emit = defineEmits<{
   select: [item: string]
-  mouseMove: []
+  itemHover: [index: number]
 }>()
 
 const handleItemClick = (item: string) => {
   emit('select', item)
 }
 
-const handleContainerMouseMove = () => {
-  emit('mouseMove')
-}
 </script>
 
 <template>
@@ -25,19 +23,19 @@ const handleContainerMouseMove = () => {
       v-show="props.dataList.length"
       ref="dataListRef"
       :class="{ 'keyboard-navigating': props.isKeyboardNavigating }"
-      @mousemove="handleContainerMouseMove"
   >
     <div
         class="suggest-list-item-wrap"
         v-for="(item, index) in props.dataList"
         :key="index"
-        :class="{ 'selected': index === selectedIndex }"
+        :class="{ 'selected': index === mouseSelectedIndex || index === keyboardSelectedIndex}"
         @click="handleItemClick(item)"
+        @mouseenter="emit('itemHover', index)"
     >
       <div class="suggest-list-item">
         {{item}}
       </div>
-      <img src="@/assets/svg/searchBar/search.svg" alt="" v-show="index === selectedIndex">
+      <img src="@/assets/svg/searchBar/search.svg" alt="" v-show="index === keyboardSelectedIndex">
     </div>
   </div>
 </template>

@@ -8,13 +8,16 @@ interface UseKeyboardNavigationOptions {
 
 export function useKeyboardNavigation(options: UseKeyboardNavigationOptions) {
     const {dataList, containerRef, onSelect} = options
-    const selectedIndex = ref(-1)
+    const keyboardSelectedIndex = ref(-1)
     const isKeyboardNavigating = ref(false)
 
     const scrollToSelected = () => {
-        if (!containerRef.value || selectedIndex.value < 0) return
-        nextTick(() => {
-            const selectedElement = containerRef.value?.querySelector('.selected') as HTMLElement
+        if (!containerRef.value || keyboardSelectedIndex.value < 0) return
+        void nextTick(() => {
+            const el = containerRef.value instanceof HTMLElement
+                ? containerRef.value
+                : (containerRef.value as any).$el as HTMLElement
+            const selectedElement = el?.querySelector('.selected') as HTMLElement
             if (selectedElement) {
                 selectedElement.scrollIntoView({block: 'nearest', behavior: 'smooth'})
             }
@@ -28,39 +31,39 @@ export function useKeyboardNavigation(options: UseKeyboardNavigationOptions) {
             case 'ArrowDown':
                 e.preventDefault()
                 isKeyboardNavigating.value = true
-                selectedIndex.value = (selectedIndex.value + 1) % dataList.value.length
+                keyboardSelectedIndex.value = (keyboardSelectedIndex.value + 1) % dataList.value.length
                 scrollToSelected()
                 break
             case 'ArrowUp':
                 e.preventDefault()
                 isKeyboardNavigating.value = true
-                selectedIndex.value = selectedIndex.value <= 0 ? dataList.value.length - 1 : selectedIndex.value - 1
+                keyboardSelectedIndex.value = keyboardSelectedIndex.value <= 0 ? dataList.value.length - 1 : keyboardSelectedIndex.value - 1
                 scrollToSelected()
                 break
             case 'Enter':
-                if (selectedIndex.value >= 0 && selectedIndex.value < dataList.value.length) {
+                if (keyboardSelectedIndex.value >= 0 && keyboardSelectedIndex.value < dataList.value.length) {
                     e.preventDefault()
-                    onSelect?.(dataList.value[selectedIndex.value])
+                    onSelect?.(dataList.value[keyboardSelectedIndex.value])
                 }
                 break
         }
     }
 
-    const handleMouseMove = () => {
+    const resetKeyboardSelection = () => {
+        keyboardSelectedIndex.value = -1
         isKeyboardNavigating.value = false
-        selectedIndex.value = -1
     }
 
-    const resetSelection = () => {
-        selectedIndex.value = -1
+    const setKeyboardSelectedIndex = (index: number) => {
+        keyboardSelectedIndex.value = index
         isKeyboardNavigating.value = false
     }
 
     return {
-        selectedIndex,
+        keyboardSelectedIndex,
         isKeyboardNavigating,
         handleKeyDown,
-        handleMouseMove,
-        resetSelection
+        resetKeyboardSelection,
+        setKeyboardSelectedIndex
     }
 }

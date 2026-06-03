@@ -34,20 +34,19 @@ const searchItem = ref([
   }
 ])
 
-const mobileComponents = (direction : boolean) => {
-  // true是向上移动,false是向下移动
+const animateSearchBar = (isOpen: boolean) => {
   gsap.to(".main-wrap", {
-    y: direction ? '-20%' : 0,
+    y: isOpen ? '-20%' : 0,
     duration: 0.5,
     ease: "power2.out",
-  });
-  gsap.to(".suggest-list-wrap",{
-    opacity: direction ? 1 : 0,
-    pointerEvents: direction ? "auto" : "none",
-    y: direction ? -20 : 0,
+  })
+  gsap.to(".data-list-wrap",{
+    opacity: isOpen ? 1 : 0,
+    pointerEvents: isOpen ? "auto" : "none",
+    y: isOpen ? -20 : 0,
     duration: 0.5,
     ease: "power2.out"
-  });
+  })
 }
 
 const openSearchOptions = () => {
@@ -69,8 +68,11 @@ const handleKeyDown = (e: KeyboardEvent) => {
     suggestListRef.value.handleKeyDown(e)
   }
 }
+const handleInputFocus = () => {
+  animateSearchBar(true)
+}
 useClickOutside(searchBarWrapRef, () => {
-  mobileComponents(false)
+  animateSearchBar(false)
   isSearchOption.value = false
 })
 </script>
@@ -88,7 +90,7 @@ useClickOutside(searchBarWrapRef, () => {
           @keyup.enter="search"
           @keydown="handleKeyDown"
           autocomplete="off"
-          @focus="mobileComponents(true);"
+          @focus="handleInputFocus"
       >
       <div id="search" @click="search">
         <img src="@/assets/svg/searchBar/arrow_right.svg" alt="">

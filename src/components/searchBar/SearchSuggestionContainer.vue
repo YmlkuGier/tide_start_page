@@ -1,64 +1,52 @@
 <script setup lang="ts">
-import _ from "lodash";
-import {ref, watch} from "vue";
+import {useSearchSuggestion} from "@/composables/useSearchSuggestion.ts";
+import {onBeforeUnmount, onMounted, ref, watch} from "vue";
+import {useViewportHeight} from "@/composables/useViewportHeight.ts";
+import {useKeyboardNavigation} from "@/composables/useKeyboardNavigation.ts";
 import DropdownBlock from "@/components/searchBar/DropdownBlock.vue";
 
 const props = defineProps<{
   searchVal: string
 }>()
+
 const emit = defineEmits(["update:searchVal", "search"])
-const search = (item: string) => {
+
+const {suggestList, getSuggest, clearSuggestions} = useSearchSuggestion()
+const dropdownContainerRef = ref<HTMLElement | null>(null)
+const {adjustHeightToFitViewport, initHeightAdjustment} = useViewportHeight(dropdownContainerRef)
+
+const handleSelect = (item: string) => {
   emit("update:searchVal", item)
   emit("search")
 }
+const {selectedIndex, isKeyboardNavigating, handleKeyDown, handleMouseMove, resetSelection} = useKeyboardNavigation({
+  dataList: suggestList,
+  containerRef: dropdownContainerRef,
+  onSelect: handleSelect
+})
 
-const suggestList = ref([])
-const dropdownContainerRef = ref<InstanceType<typeof DropdownBlock> | null>(null)
-
-const getSuggest = _.debounce(async (val: string) => {
-  if (!val) {
-    suggestList.value = []
-    return
-  }
-  try {
-    const isExtension = window.location.protocol === 'chrome-extension:' ||
-        window.location.protocol === 'moz-extension:' ||
-        window.location.protocol === 'safari-extension:'
-    const apiUrl = isExtension
-        ? `https://suggestion.baidu.com/su?wd=${encodeURIComponent(val)}`
-        : `/baidu/su?wd=${encodeURIComponent(val)}`
-    const res = await fetch(apiUrl)
-    // 手动解码来处理 GBK 编码
-    const buffer = await res.arrayBuffer()
-    const bytes = new Uint8Array(buffer)
-    let text: string
-    try {
-      const decoder = new TextDecoder('gbk')
-      text = decoder.decode(bytes)
-    } catch (e) {
-      // 如果浏览器不支持 GBK 解码器，使用默认方式
-      const blob = new Blob([bytes])
-      text = await blob.text()
-    }
-    const start = text.indexOf('[')
-    const end = text.lastIndexOf(']') + 1
-    suggestList.value = JSON.parse(text.slice(start, end))
-  } catch (error) {
-    console.error('获取搜索建议失败:', error)
-    suggestList.value = []
-  }
-}, 200)
+const handleResize = () => {
+  adjustHeightToFitViewport()
+}
 
 watch(() => props.searchVal, (newVal) => {
   getSuggest(newVal)
+  resetSelection()
+})
+watch(suggestList, (newList) => {
+  if (newList.length > 0) {
+    initHeightAdjustment()
+  }
 })
 
-// 转发 handleKeyDown
-const handleKeyDown = (e: KeyboardEvent) => {
-  if (dropdownContainerRef.value) {
-    dropdownContainerRef.value.handleKeyDown(e)
-  }
-}
+onMounted(() => {
+  window.addEventListener('resize', handleResize)
+})
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', handleResize)
+  clearSuggestions()
+})
+
 defineExpose({
   handleKeyDown
 })
@@ -67,8 +55,11 @@ defineExpose({
 <template>
   <dropdown-block
       ref="dropdownContainerRef"
-      v-model:data-list="suggestList"
-      @search="search"
+      :data-list="suggestList"
+      :selected-index="selectedIndex"
+      :is-keyboard-navigating="isKeyboardNavigating"
+      @select="handleSelect"
+      @mouse-move="handleMouseMove"
   />
 </template>
 

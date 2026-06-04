@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {useSearchSuggestion} from "@/composables/useSearchSuggestion.ts";
-import {onBeforeUnmount, onMounted, ref, watch} from "vue";
-import {useViewportHeight} from "@/composables/useViewportHeight.ts";
+import {onBeforeUnmount, ref, watch} from "vue";
 import {useKeyboardNavigation} from "@/composables/useKeyboardNavigation.ts";
 import {useMouseNavigation} from "@/composables/useMouseNavigation.ts";
 import DropdownBlock from "@/components/searchBar/DropdownBlock.vue";
@@ -14,7 +13,6 @@ const emit = defineEmits(["update:searchVal", "search"])
 
 const {suggestList, getSuggest, clearSuggestions} = useSearchSuggestion()
 const dropdownContainerRef = ref<HTMLElement | null>(null)
-const {adjustHeightToFitViewport, initHeightAdjustment} = useViewportHeight(dropdownContainerRef)
 
 const handleSelect = (item: string) => {
   emit("update:searchVal", item)
@@ -26,10 +24,6 @@ const {keyboardSelectedIndex, isKeyboardNavigating, handleKeyDown, setKeyboardSe
   onSelect: handleSelect,
 })
 const {mouseSelectedIndex, setMouseSelectedIndex, resetMouseSelection} = useMouseNavigation()
-
-const handleResize = () => {
-  adjustHeightToFitViewport()
-}
 
 const setSelectedIndex = (index: number) => {
   resetKeyboardSelection()
@@ -48,17 +42,8 @@ watch(() => props.searchVal, (newVal) => {
   getSuggest(newVal)
   resetKeyboardSelection()
 })
-watch(suggestList, (newList) => {
-  if (newList.length > 0) {
-    initHeightAdjustment()
-  }
-})
 
-onMounted(() => {
-  window.addEventListener('resize', handleResize)
-})
 onBeforeUnmount(() => {
-  window.removeEventListener('resize', handleResize)
   clearSuggestions()
 })
 

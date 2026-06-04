@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import {useViewportHeight} from "@/composables/useViewportHeight.ts";
+import {onBeforeUnmount, onMounted, ref, watch} from "vue";
+
 const props = defineProps<{
   dataList: string[]
   keyboardSelectedIndex: number
@@ -11,14 +14,30 @@ const emit = defineEmits<{
   itemHover: [index: number]
 }>()
 
+const dropdownContainerRef = ref<HTMLElement | null>(null)
+
 const handleItemClick = (item: string) => {
   emit('select', item)
 }
 
+const {adjustHeightToFitViewport, initHeightAdjustment} = useViewportHeight(dropdownContainerRef)
+
+onMounted(() => {
+  window.addEventListener('resize', adjustHeightToFitViewport)
+})
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', adjustHeightToFitViewport)
+})
+watch(props.dataList, (newList) => {
+  if (newList.length > 0) {
+    initHeightAdjustment()
+  }
+})
 </script>
 
 <template>
   <div
+      ref="dropdownContainerRef"
       class="data-list-wrap frosted-glass-show scrollbar-style-1"
       v-show="props.dataList.length"
       :class="{ 'keyboard-navigating': props.isKeyboardNavigating }"

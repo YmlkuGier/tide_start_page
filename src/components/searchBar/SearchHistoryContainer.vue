@@ -18,6 +18,10 @@ const handleSelect = (item: string) => {
   emit("update:searchVal", item)
   emit("search")
 }
+const setSelectedIndex = (index: number) => {
+  resetKeyboardSelection()
+  setMouseSelectedIndex(index)
+}
 const handleKeyDownSelect = (e: KeyboardEvent) => {
   if (keyboardSelectedIndex.value === -1) {
     setKeyboardSelectedIndex(mouseSelectedIndex.value)
@@ -26,7 +30,7 @@ const handleKeyDownSelect = (e: KeyboardEvent) => {
   handleKeyDown(e)
 }
 
-const {keyboardSelectedIndex, isKeyboardNavigating, setKeyboardSelectedIndex, handleKeyDown} = useKeyboardNavigation({
+const {keyboardSelectedIndex, isKeyboardNavigating, setKeyboardSelectedIndex, handleKeyDown, resetKeyboardSelection} = useKeyboardNavigation({
   dataList: history,
   containerRef: dropdownContainerRef,
   onSelect: handleSelect
@@ -46,7 +50,7 @@ defineExpose({
       :mouse-selected-index="mouseSelectedIndex"
       :is-keyboard-navigating="isKeyboardNavigating"
       @select="handleSelect"
-      @item-hover="setMouseSelectedIndex"
+      @item-hover="setSelectedIndex"
   />
 </template>
 

@@ -36,26 +36,29 @@ watch(props.dataList, (newList) => {
 </script>
 
 <template>
-  <div
-      ref="dropdownContainerRef"
-      class="data-list-wrap frosted-glass-show scrollbar-style-1"
-      v-show="props.dataList.length"
-      :class="{ 'keyboard-navigating': props.isKeyboardNavigating }"
-  >
+  <div>
     <div
-        class="suggest-list-item-wrap"
-        v-for="(item, index) in props.dataList"
-        :key="index"
-        :class="{ 'selected': index === mouseSelectedIndex || index === keyboardSelectedIndex}"
-        @click="handleItemClick(item)"
-        @mouseenter="emit('itemHover', index)"
+        ref="dropdownContainerRef"
+        class="data-list-wrap frosted-glass-show scrollbar-style-1"
+        v-show="props.dataList.length"
+        :class="{ 'keyboard-navigating': props.isKeyboardNavigating }"
     >
-      <div class="suggest-list-item">
-        {{item}}
+      <div
+          class="suggest-list-item-wrap"
+          v-for="(item, index) in props.dataList"
+          :key="index"
+          :class="{ 'selected': index === mouseSelectedIndex || index === keyboardSelectedIndex}"
+          @click="handleItemClick(item)"
+          @mouseenter="emit('itemHover', index)"
+      >
+        <div class="suggest-list-item">
+          {{item}}
+        </div>
+        <img src="@/assets/svg/searchBar/search.svg" alt="" v-show="index === keyboardSelectedIndex">
       </div>
-      <img src="@/assets/svg/searchBar/search.svg" alt="" v-show="index === keyboardSelectedIndex">
     </div>
   </div>
+
 </template>
 
 <style scoped>

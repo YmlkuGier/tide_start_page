@@ -67,10 +67,10 @@ const search = () => {
   }
 }
 const handleKeyDown = (e: KeyboardEvent) => {
-  if (suggestListRef.value) {
+  if (!isHistoryShow.value && suggestListRef.value) {
     suggestListRef.value.handleKeyDownSelect(e)
   }
-  if (historyListRef.value) {
+  if (isHistoryShow.value && historyListRef.value) {
     historyListRef.value.handleKeyDownSelect(e)
   }
 }

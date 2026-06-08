@@ -40,7 +40,6 @@ const handleKeyDownSelect = (e: KeyboardEvent) => {
 
 watch(() => props.searchVal, (newVal) => {
   getSuggest(newVal)
-  resetKeyboardSelection()
 })
 
 onBeforeUnmount(() => {

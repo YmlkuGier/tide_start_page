@@ -24,3 +24,18 @@ export const useClickOutside = (
         document.removeEventListener('mousedown', handler)
     })
 }
+
+export const debounce = (
+    fn: Function,
+    delay: number
+) => {
+    let t: number | null = null
+    return function (this: any) {
+        if (t !== null) {
+            clearTimeout(t)
+        }
+        t = setTimeout(() => {
+            fn.call(this)
+        }, delay)
+    }
+}

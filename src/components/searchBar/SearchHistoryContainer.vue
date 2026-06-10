@@ -1,18 +1,15 @@
 <script setup lang="ts">
 import DropdownBlock from "@/components/searchBar/DropdownBlock.vue";
-import {type Ref, ref} from "vue";
+import {ref} from "vue";
 import {useKeyboardNavigation} from "@/composables/useKeyboardNavigation.ts";
 import {useMouseNavigation} from "@/composables/useMouseNavigation.ts";
+import {useSearchHistory} from "@/composables/useSearchHistory.ts";
 
 const emit = defineEmits(["update:searchVal", "search"])
 
-const dropdownContainerRef = ref<HTMLElement | null>(null)
+const {searchHistory} = useSearchHistory()
 
-const history: Ref<string[]> = ref([
-    "模拟数据1",
-    "模拟数据2",
-    "模拟数据3"
-])
+const dropdownContainerRef = ref<HTMLElement | null>(null)
 
 const handleSelect = (item: string) => {
   emit("update:searchVal", item)
@@ -31,7 +28,7 @@ const handleKeyDownSelect = (e: KeyboardEvent) => {
 }
 
 const {keyboardSelectedIndex, isKeyboardNavigating, setKeyboardSelectedIndex, handleKeyDown, resetKeyboardSelection} = useKeyboardNavigation({
-  dataList: history,
+  dataList: searchHistory,
   containerRef: dropdownContainerRef,
   onSelect: handleSelect
 })
@@ -45,7 +42,7 @@ defineExpose({
 <template>
   <dropdown-block
       ref="dropdownContainerRef"
-      :data-list="history"
+      :data-list="searchHistory"
       :keyboard-selected-index="keyboardSelectedIndex"
       :mouse-selected-index="mouseSelectedIndex"
       :is-keyboard-navigating="isKeyboardNavigating"

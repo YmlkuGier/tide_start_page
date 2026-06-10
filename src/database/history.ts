@@ -9,6 +9,10 @@ export class HistoryRepository {
         })
     }
 
+    static async getAll() {
+        return db.table("searchHistory").limit(10).toArray()
+    }
+
     static async delete(id: number) {
         if (!id || id <= 0) return
         await db.table("searchHistory").delete(id)

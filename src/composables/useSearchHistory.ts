@@ -11,7 +11,13 @@ export function useSearchHistory() {
     const searchHistory: Ref<HistoryItem[]> = ref([])
 
     const addSearchHistory = async (keyword: string) => {
-        await HistoryRepository.add(keyword)
+        if (!keyword.trim()) return
+        const trimmedKeyword = keyword.trim()
+        const existingId = await HistoryRepository.getIdByKeyword(trimmedKeyword)
+        if (existingId) {
+            await HistoryRepository.delete(existingId)
+        }
+        await HistoryRepository.add(trimmedKeyword)
         searchHistory.value = await getSearchHistory()
     }
 

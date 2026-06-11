@@ -10,7 +10,7 @@ export class HistoryRepository {
     }
 
     static async getAll() {
-        return db.table("searchHistory").limit(10).toArray()
+        return db.table("searchHistory").orderBy('id').reverse().limit(10).toArray()
     }
 
     static async delete(id: number) {

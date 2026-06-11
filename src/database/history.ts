@@ -18,4 +18,10 @@ export class HistoryRepository {
         await db.table("searchHistory").delete(id)
     }
 
+    static async getIdByKeyword(keyword: string) {
+        if (!keyword.trim()) return null
+        const record = await db.table("searchHistory").filter(item => item.keyword === keyword.trim()).first()
+        return record ? record.id : null
+    }
+
 }

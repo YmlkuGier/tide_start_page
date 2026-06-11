@@ -7,7 +7,7 @@ import {useSearchHistory} from "@/composables/useSearchHistory.ts";
 
 const emit = defineEmits(["update:searchVal", "search"])
 
-const {searchHistory} = useSearchHistory()
+const {searchHistory, deleteSearchHistory} = useSearchHistory()
 
 const dropdownContainerRef = ref<HTMLElement | null>(null)
 
@@ -34,6 +34,10 @@ const {keyboardSelectedIndex, isKeyboardNavigating, setKeyboardSelectedIndex, ha
 })
 const {mouseSelectedIndex, setMouseSelectedIndex, resetMouseSelection} = useMouseNavigation()
 
+const deleteHistory = (index: number) => {
+  deleteSearchHistory(searchHistory.value[index])
+}
+
 defineExpose({
   handleKeyDownSelect
 })
@@ -49,6 +53,7 @@ defineExpose({
       :show-delete="true"
       @select="handleSelect"
       @item-hover="setSelectedIndex"
+      @delete="deleteHistory"
   />
 </template>
 

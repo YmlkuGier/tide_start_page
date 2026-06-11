@@ -13,6 +13,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'select', item: string): void
   (e: 'itemHover', index: number): void
+  (e: 'delete', id: number): void
 }>()
 
 const dropdownContainerRef = ref<HTMLElement | null>(null)
@@ -56,7 +57,9 @@ watch(props.dataList, (newList) => {
           {{item}}
         </div>
         <img src="@/assets/svg/searchBar/search.svg" alt="" v-show="index === keyboardSelectedIndex">
-        <img src="@/assets/svg/searchBar/delete.svg" alt="" v-show="props.showDelete && mouseSelectedIndex === index">
+        <div class="delete-button" @click.stop="emit('delete', index)">
+          <img src="@/assets/svg/searchBar/delete.svg" alt="" v-show="props.showDelete && mouseSelectedIndex === index">
+        </div>
       </div>
     </div>
   </div>
@@ -93,6 +96,19 @@ watch(props.dataList, (newList) => {
   justify-content: space-between;
   img {
     width: 20px;
+  }
+  .delete-button {
+    width: 20px;
+    height: 20px;
+    padding: 3px;
+    border-radius: 10px;
+    img {
+      width: 100%;
+    }
+  }
+  .delete-button:hover {
+    cursor: pointer;
+    background-color: var(--color-button-elevated);
   }
 }
 .data-list-wrap:not(.keyboard-navigating) .suggest-list-item-wrap:hover {

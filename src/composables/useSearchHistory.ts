@@ -15,6 +15,12 @@ export function useSearchHistory() {
         return records.map((record: any) => record.keyword)
     }
 
+    const deleteSearchHistory = async (keyword: string) => {
+        const id = await HistoryRepository.getIdByKeyword(keyword)
+        await HistoryRepository.delete(id)
+        searchHistory.value = await getSearchHistory()
+    }
+
     onMounted(async () => {
         searchHistory.value = await getSearchHistory()
     })
@@ -22,6 +28,7 @@ export function useSearchHistory() {
     return {
         searchHistory,
         addSearchHistory,
-        getSearchHistory
+        getSearchHistory,
+        deleteSearchHistory
     }
 }

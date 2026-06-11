@@ -46,6 +46,7 @@ defineExpose({
       :keyboard-selected-index="keyboardSelectedIndex"
       :mouse-selected-index="mouseSelectedIndex"
       :is-keyboard-navigating="isKeyboardNavigating"
+      :show-delete="true"
       @select="handleSelect"
       @item-hover="setSelectedIndex"
   />

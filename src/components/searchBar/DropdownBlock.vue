@@ -7,6 +7,7 @@ const props = defineProps<{
   keyboardSelectedIndex: number
   mouseSelectedIndex: number
   isKeyboardNavigating: boolean
+  showDelete?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -55,6 +56,7 @@ watch(props.dataList, (newList) => {
           {{item}}
         </div>
         <img src="@/assets/svg/searchBar/search.svg" alt="" v-show="index === keyboardSelectedIndex">
+        <img src="@/assets/svg/searchBar/delete.svg" alt="" v-show="props.showDelete && mouseSelectedIndex === index">
       </div>
     </div>
   </div>

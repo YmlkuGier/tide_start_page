@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import DropdownBlock from "@/components/searchBar/DropdownBlock.vue";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import {useKeyboardNavigation} from "@/composables/useKeyboardNavigation.ts";
 import {useMouseNavigation} from "@/composables/useMouseNavigation.ts";
 import {useSearchHistory} from "@/composables/useSearchHistory.ts";
@@ -28,15 +28,11 @@ const handleKeyDownSelect = (e: KeyboardEvent) => {
 }
 
 const {keyboardSelectedIndex, isKeyboardNavigating, setKeyboardSelectedIndex, handleKeyDown, resetKeyboardSelection} = useKeyboardNavigation({
-  dataList: searchHistory,
+  dataList: computed(() => searchHistory.value.map(item => item.keyword)),
   containerRef: dropdownContainerRef,
   onSelect: handleSelect
 })
 const {mouseSelectedIndex, setMouseSelectedIndex, resetMouseSelection} = useMouseNavigation()
-
-const deleteHistory = (index: number) => {
-  deleteSearchHistory(searchHistory.value[index])
-}
 
 defineExpose({
   handleKeyDownSelect
@@ -53,7 +49,7 @@ defineExpose({
       :show-delete="true"
       @select="handleSelect"
       @item-hover="setSelectedIndex"
-      @delete="deleteHistory"
+      @delete="deleteSearchHistory"
   />
 </template>
 

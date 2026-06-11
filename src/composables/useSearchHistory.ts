@@ -1,9 +1,14 @@
 import { HistoryRepository } from "@/database/history"
 import {onMounted, type Ref, ref} from "vue";
 
+interface HistoryItem {
+    id: number
+    keyword: string
+}
+
 export function useSearchHistory() {
 
-    const searchHistory: Ref<string[]> = ref([])
+    const searchHistory: Ref<HistoryItem[]> = ref([])
 
     const addSearchHistory = async (keyword: string) => {
         await HistoryRepository.add(keyword)
@@ -12,11 +17,14 @@ export function useSearchHistory() {
 
     const getSearchHistory = async () => {
         const records = await HistoryRepository.getAll()
-        return records.map((record: any) => record.keyword)
+        return records.map((record: any) => ({
+            id: record.id,
+            keyword: record.keyword
+        }))
     }
 
-    const deleteSearchHistory = async (keyword: string) => {
-        const id = await HistoryRepository.getIdByKeyword(keyword)
+    const deleteSearchHistory = async (id: number) => {
+        if (!id) return
         await HistoryRepository.delete(id)
         searchHistory.value = await getSearchHistory()
     }

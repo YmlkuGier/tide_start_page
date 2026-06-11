@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {useViewportHeight} from "@/composables/useViewportHeight.ts";
-import {onBeforeUnmount, onMounted, ref, watch} from "vue";
+import {computed, onBeforeUnmount, onMounted, ref, watch} from "vue";
 
 const props = defineProps<{
-  dataList: string[]
+  dataList: string[] | { id: number; keyword: string }[]
   keyboardSelectedIndex: number
   mouseSelectedIndex: number
   isKeyboardNavigating: boolean
@@ -18,8 +18,9 @@ const emit = defineEmits<{
 
 const dropdownContainerRef = ref<HTMLElement | null>(null)
 
-const handleItemClick = (item: string) => {
-  emit('select', item)
+const handleItemClick = (item: string | { id: number; keyword: string }) => {
+  const value = typeof item === 'string' ? item : item.keyword
+  emit('select', value)
 }
 
 const {adjustHeightToFitViewport, initHeightAdjustment} = useViewportHeight(dropdownContainerRef)
@@ -54,10 +55,10 @@ watch(props.dataList, (newList) => {
           @mouseenter="emit('itemHover', index)"
       >
         <div class="suggest-list-item">
-          {{item}}
+          {{typeof item === 'string' ? item : item.keyword}}
         </div>
         <img src="@/assets/svg/searchBar/search.svg" alt="" v-show="index === keyboardSelectedIndex">
-        <div class="delete-button" @click.stop="emit('delete', index)">
+        <div class="delete-button" @click.stop="emit('delete', typeof item === 'string' ? -1 : item.id)">
           <img src="@/assets/svg/searchBar/delete.svg" alt="" v-show="props.showDelete && mouseSelectedIndex === index">
         </div>
       </div>

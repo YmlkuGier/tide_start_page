@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {useViewportHeight} from "@/composables/useViewportHeight.ts";
-import {computed, onBeforeUnmount, onMounted, ref, watch} from "vue";
+import {onBeforeUnmount, onMounted, ref, watch} from "vue";
 
 const props = defineProps<{
   dataList: string[] | { id: number; keyword: string }[]
@@ -58,8 +58,12 @@ watch(props.dataList, (newList) => {
           {{typeof item === 'string' ? item : item.keyword}}
         </div>
         <img src="@/assets/svg/searchBar/search.svg" alt="" v-show="index === keyboardSelectedIndex">
-        <div class="delete-button" @click.stop="emit('delete', typeof item === 'string' ? -1 : item.id)">
-          <img src="@/assets/svg/searchBar/delete.svg" alt="" v-show="props.showDelete && mouseSelectedIndex === index">
+        <div
+            class="delete-button"
+            @click.stop="emit('delete', typeof item === 'string' ? -1 : item.id)"
+            v-show="props.showDelete && mouseSelectedIndex === index"
+        >
+          <img src="@/assets/svg/searchBar/delete.svg" alt="">
         </div>
       </div>
     </div>

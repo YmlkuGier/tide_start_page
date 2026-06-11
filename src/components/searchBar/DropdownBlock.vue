@@ -10,8 +10,8 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  select: [item: string]
-  itemHover: [index: number]
+  (e: 'select', item: string): void
+  (e: 'itemHover', index: number): void
 }>()
 
 const dropdownContainerRef = ref<HTMLElement | null>(null)

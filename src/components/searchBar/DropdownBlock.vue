@@ -53,6 +53,7 @@ watch(props.dataList, (newList) => {
           :class="{ 'selected': index === mouseSelectedIndex || index === keyboardSelectedIndex}"
           @click="handleItemClick(item)"
           @mouseenter="emit('itemHover', index)"
+          @mouseleave="emit('itemHover', -1)"
       >
         <div class="suggest-list-item">
           {{typeof item === 'string' ? item : item.keyword}}

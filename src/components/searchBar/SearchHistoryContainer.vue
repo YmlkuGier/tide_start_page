@@ -20,7 +20,12 @@ const setSelectedIndex = (index: number) => {
   setMouseSelectedIndex(index)
 }
 const handleKeyDownSelect = (e: KeyboardEvent) => {
-  if (keyboardSelectedIndex.value === -1) {
+  if (e.key === 'Enter') {
+    if (!isKeyboardNavigating.value && keyboardSelectedIndex.value === -1) {
+      return
+    }
+  }
+  if (keyboardSelectedIndex.value === -1 && mouseSelectedIndex.value !== -1) {
     setKeyboardSelectedIndex(mouseSelectedIndex.value)
     resetMouseSelection()
   }

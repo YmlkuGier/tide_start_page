@@ -41,7 +41,7 @@ export function useKeyboardNavigation(options: UseKeyboardNavigationOptions) {
                 scrollToSelected()
                 break
             case 'Enter':
-                if (keyboardSelectedIndex.value >= 0 && keyboardSelectedIndex.value < dataList.value.length) {
+                if (isKeyboardNavigating.value && keyboardSelectedIndex.value >= 0 && keyboardSelectedIndex.value < dataList.value.length) {
                     e.preventDefault()
                     onSelect?.(dataList.value[keyboardSelectedIndex.value])
                 }

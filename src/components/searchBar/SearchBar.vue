@@ -1,18 +1,24 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import baiduIcon from '@/assets/svg/searchBar/engine/baidu.svg?url'
 import bingIcon from '@/assets/svg/searchBar/engine/bing.svg?url'
 import googleIcon from '@/assets/svg/searchBar/engine/google.svg?url'
 import SearchSuggestionContainer from "@/components/searchBar/SearchSuggestionContainer.vue";
 import gsap from 'gsap';
 import {useClickOutside} from "@/utils/util.ts";
+import SearchHistoryContainer from "@/components/searchBar/SearchHistoryContainer.vue";
+import {useSearchHistory} from "@/composables/useSearchHistory.ts";
 
 const searchBarWrapRef = ref<HTMLElement | null>(null)
 const suggestListRef = ref<InstanceType<typeof SearchSuggestionContainer> | null>(null)
+const historyListRef = ref<InstanceType<typeof SearchHistoryContainer> | null>(null)
 const isSearchOption = ref(false)
+const isHistoryShow = ref(true)
 const searchVal = ref('')
 const searchOptionID = ref('bing')
 const searchURL = ref('https://www.bing.com/search?q=')
+const searchState = ref(false)
+const {addSearchHistory} = useSearchHistory()
 const searchItem = ref([
   {
     id: 'baidu',
@@ -58,14 +64,20 @@ const settingSearchOptions = (id: string) => {
   isSearchOption.value = false
 }
 const search = () => {
+  if (searchState.value) return
   if (!searchVal.value.trim()) return
   if (searchURL.value) {
+    searchState.value = true
     window.location.href = searchURL.value + encodeURIComponent(searchVal.value)
+    addSearchHistory(searchVal.value)
   }
 }
 const handleKeyDown = (e: KeyboardEvent) => {
-  if (suggestListRef.value) {
+  if (!isHistoryShow.value && suggestListRef.value) {
     suggestListRef.value.handleKeyDownSelect(e)
+  }
+  if (isHistoryShow.value && historyListRef.value) {
+    historyListRef.value.handleKeyDownSelect(e)
   }
 }
 const handleInputFocus = () => {
@@ -74,6 +86,10 @@ const handleInputFocus = () => {
 useClickOutside(searchBarWrapRef, () => {
   animateSearchBar(false)
   isSearchOption.value = false
+})
+
+watch(searchVal, (newVal) => {
+  isHistoryShow.value = newVal === '';
 })
 </script>
 
@@ -100,8 +116,15 @@ useClickOutside(searchBarWrapRef, () => {
         ref="suggestListRef"
         v-model:search-val="searchVal"
         @search="search"
+        v-show="!isHistoryShow"
     />
-    <div class="option_wrap frosted-glass-show" v-show="isSearchOption">
+    <search-history-container
+        ref="historyListRef"
+        v-model:search-val="searchVal"
+        @search="search"
+        v-show="isHistoryShow"
+    />
+    <div class="option_wrap frosted-glass-show" v-if="isSearchOption">
       <div class="opt" v-for="item in searchItem" :key="item.id" @click="settingSearchOptions(item.id)">
         <img :src="item.icon" alt="">
         <span>{{item.name}}</span>

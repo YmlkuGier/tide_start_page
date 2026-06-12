@@ -1,42 +1,75 @@
 <script setup lang="ts">
+import {useViewportHeight} from "@/composables/useViewportHeight.ts";
+import {onBeforeUnmount, onMounted, ref, watch} from "vue";
+
 const props = defineProps<{
-  dataList: string[]
+  dataList: string[] | { id: number; keyword: string }[]
   keyboardSelectedIndex: number
   mouseSelectedIndex: number
   isKeyboardNavigating: boolean
+  showDelete?: boolean
 }>()
 
 const emit = defineEmits<{
-  select: [item: string]
-  itemHover: [index: number]
+  (e: 'select', item: string): void
+  (e: 'itemHover', index: number): void
+  (e: 'delete', id: number): void
 }>()
 
-const handleItemClick = (item: string) => {
-  emit('select', item)
+const dropdownContainerRef = ref<HTMLElement | null>(null)
+
+const handleItemClick = (item: string | { id: number; keyword: string }) => {
+  const value = typeof item === 'string' ? item : item.keyword
+  emit('select', value)
 }
 
+const {adjustHeightToFitViewport, initHeightAdjustment} = useViewportHeight(dropdownContainerRef)
+
+onMounted(() => {
+  window.addEventListener('resize', adjustHeightToFitViewport)
+})
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', adjustHeightToFitViewport)
+})
+watch(props.dataList, (newList) => {
+  if (newList.length > 0) {
+    initHeightAdjustment()
+  }
+})
 </script>
 
 <template>
-  <div
-      class="data-list-wrap frosted-glass-show scrollbar-style-1"
-      v-show="props.dataList.length"
-      :class="{ 'keyboard-navigating': props.isKeyboardNavigating }"
-  >
+  <div>
     <div
-        class="suggest-list-item-wrap"
-        v-for="(item, index) in props.dataList"
-        :key="index"
-        :class="{ 'selected': index === mouseSelectedIndex || index === keyboardSelectedIndex}"
-        @click="handleItemClick(item)"
-        @mouseenter="emit('itemHover', index)"
+        ref="dropdownContainerRef"
+        class="data-list-wrap frosted-glass-show scrollbar-style-1"
+        v-show="props.dataList.length"
+        :class="{ 'keyboard-navigating': props.isKeyboardNavigating }"
     >
-      <div class="suggest-list-item">
-        {{item}}
+      <div
+          class="suggest-list-item-wrap"
+          v-for="(item, index) in props.dataList"
+          :key="index"
+          :class="{ 'selected': index === mouseSelectedIndex || index === keyboardSelectedIndex}"
+          @click="handleItemClick(item)"
+          @mouseenter="emit('itemHover', index)"
+          @mouseleave="emit('itemHover', -1)"
+      >
+        <div class="suggest-list-item">
+          {{typeof item === 'string' ? item : item.keyword}}
+        </div>
+        <img src="@/assets/svg/searchBar/search.svg" alt="" v-show="index === keyboardSelectedIndex">
+        <div
+            class="delete-button"
+            @click.stop="emit('delete', typeof item === 'string' ? -1 : item.id)"
+            v-show="props.showDelete && mouseSelectedIndex === index"
+        >
+          <img src="@/assets/svg/searchBar/delete.svg" alt="">
+        </div>
       </div>
-      <img src="@/assets/svg/searchBar/search.svg" alt="" v-show="index === keyboardSelectedIndex">
     </div>
   </div>
+
 </template>
 
 <style scoped>
@@ -69,6 +102,19 @@ const handleItemClick = (item: string) => {
   justify-content: space-between;
   img {
     width: 20px;
+  }
+  .delete-button {
+    width: 20px;
+    height: 20px;
+    padding: 3px;
+    border-radius: 10px;
+    img {
+      width: 100%;
+    }
+  }
+  .delete-button:hover {
+    cursor: pointer;
+    background-color: var(--color-button-elevated);
   }
 }
 .data-list-wrap:not(.keyboard-navigating) .suggest-list-item-wrap:hover {

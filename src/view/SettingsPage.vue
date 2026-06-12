@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MenuItem from "@/components/settingPage/leftMenu/menuItem.vue";
+import MenuItem from "@/components/settingPage/leftMenu/MenuItem.vue";
 import aboutIcon from '@/assets/svg/setting/menu/about.svg';
 import homeIcon from '@/assets/svg/setting/menu/home.svg';
 

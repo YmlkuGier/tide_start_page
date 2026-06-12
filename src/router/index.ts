@@ -1,7 +1,7 @@
 import {createRouter, createWebHashHistory} from 'vue-router';
-import Homepage from "../view/homepage.vue";
-import SettingsPage from "../view/SettingsPage.vue";
-import AboutPage from "@/view/setting/aboutPage.vue";
+import Homepage from "@/view/HomePage.vue";
+import SettingsPage from "@/view/SettingsPage.vue";
+import AboutPage from "@/view/setting/AboutPage.vue";
 
 const routes = [
     {

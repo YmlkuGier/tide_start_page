@@ -8,7 +8,7 @@ import gsap from 'gsap';
 import {useClickOutside} from "@/utils/util.ts";
 import SearchHistoryContainer from "@/components/searchBar/SearchHistoryContainer.vue";
 import {useSearchHistory} from "@/composables/useSearchHistory.ts";
-import {useSearchBarFocus} from "@/composables/useSearchBarFocus.ts";
+import {onTabDown, onTabUp} from "@/composables/useSearchBarFocus.ts";
 
 const searchBarWrapRef = ref<HTMLElement | null>(null)
 const suggestListRef = ref<InstanceType<typeof SearchSuggestionContainer> | null>(null)
@@ -84,6 +84,9 @@ const handleKeyDown = (e: KeyboardEvent) => {
 const handleInputFocus = () => {
   animateSearchBar(true)
 }
+const handleInputFocusOut = () => {
+  animateSearchBar(false)
+}
 useClickOutside(searchBarWrapRef, () => {
   animateSearchBar(false)
   isSearchOption.value = false
@@ -95,11 +98,13 @@ watch(searchVal, (newVal) => {
 
 onMounted(() => {
   searchBarWrapRef.value?.focus()
-  document.addEventListener("keydown", useSearchBarFocus)
+  document.addEventListener('keydown', onTabDown)
+  document.addEventListener("keyup", onTabUp)
 })
 
 onBeforeUnmount(() => {
-  document.removeEventListener("keydown", useSearchBarFocus)
+  document.removeEventListener('keydown', onTabDown)
+  document.removeEventListener("keyup", onTabUp)
 })
 </script>
 
@@ -117,6 +122,7 @@ onBeforeUnmount(() => {
           @keydown="handleKeyDown"
           autocomplete="off"
           @focus="handleInputFocus"
+          @blur="handleInputFocusOut"
       >
       <div id="search" @click="search">
         <img src="@/assets/svg/searchBar/arrow_right.svg" alt="">

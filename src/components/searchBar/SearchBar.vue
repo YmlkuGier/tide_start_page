@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, watch} from "vue";
+import {onBeforeUnmount, onMounted, ref, watch} from "vue";
 import baiduIcon from '@/assets/svg/searchBar/engine/baidu.svg?url'
 import bingIcon from '@/assets/svg/searchBar/engine/bing.svg?url'
 import googleIcon from '@/assets/svg/searchBar/engine/google.svg?url'
@@ -8,6 +8,7 @@ import gsap from 'gsap';
 import {useClickOutside} from "@/utils/util.ts";
 import SearchHistoryContainer from "@/components/searchBar/SearchHistoryContainer.vue";
 import {useSearchHistory} from "@/composables/useSearchHistory.ts";
+import {useSearchBarFocus} from "@/composables/useSearchBarFocus.ts";
 
 const searchBarWrapRef = ref<HTMLElement | null>(null)
 const suggestListRef = ref<InstanceType<typeof SearchSuggestionContainer> | null>(null)
@@ -90,6 +91,15 @@ useClickOutside(searchBarWrapRef, () => {
 
 watch(searchVal, (newVal) => {
   isHistoryShow.value = newVal === '';
+})
+
+onMounted(() => {
+  searchBarWrapRef.value?.focus()
+  document.addEventListener("keydown", useSearchBarFocus)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener("keydown", useSearchBarFocus)
 })
 </script>
 

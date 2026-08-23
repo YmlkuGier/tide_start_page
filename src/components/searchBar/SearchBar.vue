@@ -4,11 +4,10 @@ import baiduIcon from '@/assets/svg/searchBar/engine/baidu.svg?url'
 import bingIcon from '@/assets/svg/searchBar/engine/bing.svg?url'
 import googleIcon from '@/assets/svg/searchBar/engine/google.svg?url'
 import SearchSuggestionContainer from "@/components/searchBar/SearchSuggestionContainer.vue";
-import gsap from 'gsap';
 import {useClickOutside} from "@/utils/util.ts";
 import SearchHistoryContainer from "@/components/searchBar/SearchHistoryContainer.vue";
 import {useSearchHistory} from "@/composables/useSearchHistory.ts";
-import {onTabDown, onTabUp} from "@/composables/useSearchBarFocus.ts";
+import {onSearchBarTabDown, onSearchBarTabUp, onSearchBarFocus, onSearchBarBlur} from "@/composables/useSearchBarFocus.ts";
 
 const searchBarWrapRef = ref<HTMLElement | null>(null)
 const suggestListRef = ref<InstanceType<typeof SearchSuggestionContainer> | null>(null)
@@ -41,21 +40,6 @@ const searchItem = ref([
   }
 ])
 
-const animateSearchBar = (isOpen: boolean) => {
-  gsap.to(".main-wrap", {
-    y: isOpen ? '-20%' : 0,
-    duration: 0.5,
-    ease: "power2.out",
-  })
-  gsap.to(".data-list-wrap",{
-    opacity: isOpen ? 1 : 0,
-    pointerEvents: isOpen ? "auto" : "none",
-    y: isOpen ? -20 : 0,
-    duration: 0.5,
-    ease: "power2.out"
-  })
-}
-
 const openSearchOptions = () => {
   isSearchOption.value = !isSearchOption.value
 }
@@ -81,14 +65,7 @@ const handleKeyDown = (e: KeyboardEvent) => {
     historyListRef.value.handleKeyDownSelect(e)
   }
 }
-const handleInputFocus = () => {
-  animateSearchBar(true)
-}
-const handleInputFocusOut = () => {
-  animateSearchBar(false)
-}
 useClickOutside(searchBarWrapRef, () => {
-  animateSearchBar(false)
   isSearchOption.value = false
 })
 
@@ -98,20 +75,20 @@ watch(searchVal, (newVal) => {
 
 onMounted(() => {
   searchBarWrapRef.value?.focus()
-  document.addEventListener('keydown', onTabDown)
-  document.addEventListener("keyup", onTabUp)
+  document.addEventListener('keydown', onSearchBarTabDown)
+  document.addEventListener("keyup", onSearchBarTabUp)
 })
 
 onBeforeUnmount(() => {
-  document.removeEventListener('keydown', onTabDown)
-  document.removeEventListener("keyup", onTabUp)
+  document.removeEventListener('keydown', onSearchBarTabDown)
+  document.removeEventListener("keyup", onSearchBarTabUp)
 })
 </script>
 
 <template>
   <div class="searchBar_wrap" ref="searchBarWrapRef">
     <div class="searchBar frosted-glass-show">
-      <div class="icon_wrap" @click="openSearchOptions">
+      <div class="icon_wrap" @click="openSearchOptions" @mousedown.prevent>
         <img :src="searchItem.find(item => item.id === searchOptionID)?.icon" alt="">
       </div>
       <input
@@ -120,27 +97,29 @@ onBeforeUnmount(() => {
           placeholder="输入搜索内容"
           @keyup.enter="search"
           @keydown="handleKeyDown"
+          @click="onSearchBarFocus()"
+          @blur="onSearchBarBlur()"
           autocomplete="off"
-          @focus="handleInputFocus"
-          @blur="handleInputFocusOut"
       >
       <div id="search" @click="search">
         <img src="@/assets/svg/searchBar/arrow_right.svg" alt="">
       </div>
     </div>
     <search-suggestion-container
+        @mousedown.prevent
         ref="suggestListRef"
         v-model:search-val="searchVal"
         @search="search"
         v-show="!isHistoryShow"
     />
     <search-history-container
+        @mousedown.prevent
         ref="historyListRef"
         v-model:search-val="searchVal"
         @search="search"
         v-show="isHistoryShow"
     />
-    <div class="option_wrap frosted-glass-show" v-if="isSearchOption">
+    <div class="option_wrap frosted-glass-show" v-if="isSearchOption" @mousedown.prevent>
       <div class="opt" v-for="item in searchItem" :key="item.id" @click="settingSearchOptions(item.id)">
         <img :src="item.icon" alt="">
         <span>{{item.name}}</span>

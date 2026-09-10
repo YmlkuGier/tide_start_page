@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import {onBeforeUnmount, onMounted, ref, watch} from "vue";
+import SearchSuggestionContainer from "@/components/searchBar/SearchSuggestionContainer.vue";
+import SearchHistoryContainer from "@/components/searchBar/SearchHistoryContainer.vue";
+import {useClickOutside} from "@/utils/util.ts";
+import {useSearchHistory} from "@/composables/useSearchHistory.ts";
+import {onSearchBarTabDown, onSearchBarTabUp, onSearchBarFocus, onSearchBarBlur} from "@/composables/useSearchBarFocus.ts";
 import baiduIcon from '@/assets/svg/searchBar/engine/baidu.svg?url'
 import bingIcon from '@/assets/svg/searchBar/engine/bing.svg?url'
 import googleIcon from '@/assets/svg/searchBar/engine/google.svg?url'
-import SearchSuggestionContainer from "@/components/searchBar/SearchSuggestionContainer.vue";
-import {useClickOutside} from "@/utils/util.ts";
-import SearchHistoryContainer from "@/components/searchBar/SearchHistoryContainer.vue";
-import {useSearchHistory} from "@/composables/useSearchHistory.ts";
-import {onSearchBarTabDown, onSearchBarTabUp, onSearchBarFocus, onSearchBarBlur} from "@/composables/useSearchBarFocus.ts";
 
 const searchBarWrapRef = ref<HTMLElement | null>(null)
 const suggestListRef = ref<InstanceType<typeof SearchSuggestionContainer> | null>(null)
@@ -18,7 +18,6 @@ const searchVal = ref('')
 const searchOptionID = ref('bing')
 const searchURL = ref('https://www.bing.com/search?q=')
 const searchState = ref(false)
-const {addSearchHistory} = useSearchHistory()
 const searchItem = ref([
   {
     id: 'baidu',
@@ -69,16 +68,16 @@ useClickOutside(searchBarWrapRef, () => {
   isSearchOption.value = false
 })
 
+const {addSearchHistory} = useSearchHistory()
+
 watch(searchVal, (newVal) => {
   isHistoryShow.value = newVal === '';
 })
-
 onMounted(() => {
   searchBarWrapRef.value?.focus()
   document.addEventListener('keydown', onSearchBarTabDown)
   document.addEventListener("keyup", onSearchBarTabUp)
 })
-
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', onSearchBarTabDown)
   document.removeEventListener("keyup", onSearchBarTabUp)

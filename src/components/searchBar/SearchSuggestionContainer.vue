@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {useSearchSuggestion} from "@/composables/useSearchSuggestion.ts";
 import {onBeforeUnmount, ref, watch} from "vue";
+import DropdownBlock from "@/components/searchBar/DropdownBlock.vue";
+import {useSearchSuggestion} from "@/composables/useSearchSuggestion.ts";
 import {useKeyboardNavigation} from "@/composables/useKeyboardNavigation.ts";
 import {useMouseNavigation} from "@/composables/useMouseNavigation.ts";
-import DropdownBlock from "@/components/searchBar/DropdownBlock.vue";
 
 const props = defineProps<{
   searchVal: string
@@ -18,18 +18,10 @@ const handleSelect = (item: string) => {
   emit("update:searchVal", item)
   emit("search")
 }
-const {keyboardSelectedIndex, isKeyboardNavigating, handleKeyDown, setKeyboardSelectedIndex, resetKeyboardSelection} = useKeyboardNavigation({
-  dataList: suggestList,
-  containerRef: dropdownContainerRef,
-  onSelect: handleSelect,
-})
-const {mouseSelectedIndex, setMouseSelectedIndex, resetMouseSelection} = useMouseNavigation()
-
 const setSelectedIndex = (index: number) => {
   resetKeyboardSelection()
   setMouseSelectedIndex(index)
 }
-
 const handleKeyDownSelect = (e: KeyboardEvent) => {
   if (e.key === 'Enter') {
     if (!isKeyboardNavigating.value && keyboardSelectedIndex.value === -1) {
@@ -43,10 +35,16 @@ const handleKeyDownSelect = (e: KeyboardEvent) => {
   handleKeyDown(e)
 }
 
+const {keyboardSelectedIndex, isKeyboardNavigating, handleKeyDown, setKeyboardSelectedIndex, resetKeyboardSelection} = useKeyboardNavigation({
+  dataList: suggestList,
+  containerRef: dropdownContainerRef,
+  onSelect: handleSelect,
+})
+const {mouseSelectedIndex, setMouseSelectedIndex, resetMouseSelection} = useMouseNavigation()
+
 watch(() => props.searchVal, (newVal) => {
   getSuggest(newVal)
 })
-
 onBeforeUnmount(() => {
   clearSuggestions()
 })

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {useViewportHeight} from "@/composables/useViewportHeight.ts";
 import {onBeforeUnmount, onMounted, ref, watch} from "vue";
+import {useViewportHeight} from "@/composables/useViewportHeight.ts";
 
 const props = defineProps<{
   dataList: string[] | { id: number; keyword: string }[]
@@ -25,16 +25,16 @@ const handleItemClick = (item: string | { id: number; keyword: string }) => {
 
 const {adjustHeightToFitViewport, initHeightAdjustment} = useViewportHeight(dropdownContainerRef)
 
+watch(props.dataList, (newList) => {
+  if (newList.length > 0) {
+    initHeightAdjustment()
+  }
+})
 onMounted(() => {
   window.addEventListener('resize', adjustHeightToFitViewport)
 })
 onBeforeUnmount(() => {
   window.removeEventListener('resize', adjustHeightToFitViewport)
-})
-watch(props.dataList, (newList) => {
-  if (newList.length > 0) {
-    initHeightAdjustment()
-  }
 })
 </script>
 
@@ -69,7 +69,6 @@ watch(props.dataList, (newList) => {
       </div>
     </div>
   </div>
-
 </template>
 
 <style scoped>

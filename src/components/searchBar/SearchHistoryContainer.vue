@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import DropdownBlock from "@/components/searchBar/DropdownBlock.vue";
 import {computed, ref} from "vue";
+import DropdownBlock from "@/components/searchBar/DropdownBlock.vue";
 import {useKeyboardNavigation} from "@/composables/useKeyboardNavigation.ts";
 import {useMouseNavigation} from "@/composables/useMouseNavigation.ts";
 import {useSearchHistory} from "@/composables/useSearchHistory.ts";
 
 const emit = defineEmits(["update:searchVal", "search"])
-
-const {searchHistory, deleteSearchHistory} = useSearchHistory()
 
 const dropdownContainerRef = ref<HTMLElement | null>(null)
 
@@ -32,6 +30,7 @@ const handleKeyDownSelect = (e: KeyboardEvent) => {
   handleKeyDown(e)
 }
 
+const {searchHistory, deleteSearchHistory} = useSearchHistory()
 const {keyboardSelectedIndex, isKeyboardNavigating, setKeyboardSelectedIndex, handleKeyDown, resetKeyboardSelection} = useKeyboardNavigation({
   dataList: computed(() => searchHistory.value.map(item => item.keyword)),
   containerRef: dropdownContainerRef,

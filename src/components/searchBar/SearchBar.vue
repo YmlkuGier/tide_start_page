@@ -18,6 +18,7 @@ const searchVal = ref('')
 const searchOptionID = ref('bing')
 const searchURL = ref('https://www.bing.com/search?q=')
 const searchState = ref(false)
+// 搜索引擎选项
 const searchItem = ref([
   {
     id: 'baidu',
@@ -40,8 +41,10 @@ const searchItem = ref([
 ])
 
 const openSearchOptions = () => {
+  // 设置搜索引擎选项卡显示状态
   isSearchOption.value = !isSearchOption.value
 }
+// 设置搜索引擎
 const settingSearchOptions = (id: string) => {
   searchOptionID.value = id
   searchURL.value = searchItem.value.find(item => item.id === id)?.url || ''
@@ -56,11 +59,14 @@ const search = () => {
     addSearchHistory(searchVal.value)
   }
 }
+// 焦点在输入框时监听按键函数
 const handleKeyDown = (e: KeyboardEvent) => {
   if (!isHistoryShow.value && suggestListRef.value) {
+    // 搜索联想列表按键监听
     suggestListRef.value.handleKeyDownSelect(e)
   }
   if (isHistoryShow.value && historyListRef.value) {
+    // 搜索历史按键监听
     historyListRef.value.handleKeyDownSelect(e)
   }
 }
@@ -70,11 +76,13 @@ useClickOutside(searchBarWrapRef, () => {
 
 const {addSearchHistory} = useSearchHistory()
 
+// 实时监视输入框内容
 watch(searchVal, (newVal) => {
+  // 输入框内容为空就显示搜索历史
   isHistoryShow.value = newVal === '';
 })
 onMounted(() => {
-  searchBarWrapRef.value?.focus()
+  // 监听按键, tab焦点输入框
   document.addEventListener('keydown', onSearchBarTabDown)
   document.addEventListener("keyup", onSearchBarTabUp)
 })

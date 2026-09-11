@@ -1,5 +1,6 @@
 import {ref} from "vue";
 
+// 鼠标导航Composable
 export function useMouseNavigation() {
     const mouseSelectedIndex = ref(-1)
 

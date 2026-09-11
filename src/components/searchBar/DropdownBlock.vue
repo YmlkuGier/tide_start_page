@@ -3,23 +3,33 @@ import {onBeforeUnmount, onMounted, ref, watch} from "vue";
 import {useViewportHeight} from "@/composables/useViewportHeight.ts";
 
 const props = defineProps<{
+  // 选项列表
   dataList: string[] | { id: number; keyword: string }[]
+  // 高亮的选项索引
   keyboardSelectedIndex: number
+  // 通过鼠标选择的选项索引
   mouseSelectedIndex: number
+  // 是否是键盘导航
   isKeyboardNavigating: boolean
+  // 显示删除按钮
   showDelete?: boolean
 }>()
 
 const emit = defineEmits<{
+  // 选择选项
   (e: 'select', item: string): void
+  // 鼠标移入选项
   (e: 'itemHover', index: number): void
+  // 删除选项
   (e: 'delete', id: number): void
 }>()
 
 const dropdownContainerRef = ref<HTMLElement | null>(null)
 
+// 点击选项函数
 const handleItemClick = (item: string | { id: number; keyword: string }) => {
   const value = typeof item === 'string' ? item : item.keyword
+  // 向上冒泡到SearchBar执行搜索函数
   emit('select', value)
 }
 
@@ -31,6 +41,7 @@ watch(props.dataList, (newList) => {
   }
 })
 onMounted(() => {
+  // 监听窗口大小,修改下拉框高度
   window.addEventListener('resize', adjustHeightToFitViewport)
 })
 onBeforeUnmount(() => {

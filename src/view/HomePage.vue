@@ -2,6 +2,7 @@
 import router from "@/router";
 import SearchBar from "@/components/searchBar/SearchBar.vue";
 import Logo from "@/components/logo.vue";
+import TabBar from "@/components/tabBar/TabBar.vue";
 
 </script>
 
@@ -17,6 +18,7 @@ import Logo from "@/components/logo.vue";
     <div class="setting-wrap" @click="router.push('/settings')">
       <img src="@/assets/svg/setting.svg" alt="">
     </div>
+    <tab-bar class="tab-bar" />
   </div>
 </template>
 
@@ -69,5 +71,12 @@ import Logo from "@/components/logo.vue";
 }
 img {
   user-select: none;
+}
+.tab-bar {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99;
 }
 </style>

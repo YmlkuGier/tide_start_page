@@ -93,9 +93,9 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="searchBar_wrap" ref="searchBarWrapRef">
+  <div class="searchBar-wrap" ref="searchBarWrapRef">
     <div class="searchBar frosted-glass-show">
-      <div class="icon_wrap" @click="openSearchOptions" @mousedown.prevent>
+      <div class="icon-wrap" @click="openSearchOptions" @mousedown.prevent>
         <img :src="searchItem.find(item => item.id === searchOptionID)?.icon" alt="">
       </div>
       <input
@@ -136,7 +136,7 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-.searchBar_wrap {
+.searchBar-wrap {
   position: relative;
   width: auto;
   height: auto;
@@ -176,7 +176,7 @@ onBeforeUnmount(() => {
 #input::placeholder {
   color: rgba(255, 255, 255, 0.5);
 }
-.icon_wrap {
+.icon-wrap {
   width: 50px;
   height: 50px;
   border-radius: 25px 0 0 25px;
@@ -185,7 +185,7 @@ onBeforeUnmount(() => {
   justify-content: center;
   cursor: pointer;
 }
-.icon_wrap:hover {
+.icon-wrap:hover {
   background-color: var(--color-button-elevated);
 }
 #input {

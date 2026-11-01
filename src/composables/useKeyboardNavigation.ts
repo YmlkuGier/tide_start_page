@@ -6,11 +6,14 @@ interface UseKeyboardNavigationOptions {
     onSelect?: (item: string) => void
 }
 
+// 键盘导航Composable
 export function useKeyboardNavigation(options: UseKeyboardNavigationOptions) {
     const {dataList, containerRef, onSelect} = options
     const keyboardSelectedIndex = ref(-1)
+    // 键盘导航启动的状态
     const isKeyboardNavigating = ref(false)
 
+    // 自动滚动到可视区域
     const scrollToSelected = () => {
         if (!containerRef.value || keyboardSelectedIndex.value < 0) return
         void nextTick(() => {
@@ -24,9 +27,9 @@ export function useKeyboardNavigation(options: UseKeyboardNavigationOptions) {
         })
     }
 
+    // 按键监听, 切换选项
     const handleKeyDown = (e: KeyboardEvent) => {
         if (!dataList.value.length) return
-
         switch(e.key) {
             case 'ArrowDown':
                 e.preventDefault()
@@ -49,11 +52,13 @@ export function useKeyboardNavigation(options: UseKeyboardNavigationOptions) {
         }
     }
 
+    // 重置键盘选择函数
     const resetKeyboardSelection = () => {
         keyboardSelectedIndex.value = -1
         isKeyboardNavigating.value = false
     }
 
+    // 设置键盘选中索引函数
     const setKeyboardSelectedIndex = (index: number) => {
         keyboardSelectedIndex.value = index
         isKeyboardNavigating.value = false

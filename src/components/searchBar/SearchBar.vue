@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import {ref, watch} from "vue";
+import {onBeforeUnmount, onMounted, ref, watch} from "vue";
+import SearchSuggestionContainer from "@/components/searchBar/SearchSuggestionContainer.vue";
+import SearchHistoryContainer from "@/components/searchBar/SearchHistoryContainer.vue";
+import {useClickOutside} from "@/utils/util.ts";
+import {useSearchHistory} from "@/composables/useSearchHistory.ts";
+import {onSearchBarTabDown, onSearchBarTabUp, onSearchBarFocus, onSearchBarBlur} from "@/composables/useSearchBarFocus.ts";
 import baiduIcon from '@/assets/svg/searchBar/engine/baidu.svg?url'
 import bingIcon from '@/assets/svg/searchBar/engine/bing.svg?url'
 import googleIcon from '@/assets/svg/searchBar/engine/google.svg?url'
-import SearchSuggestionContainer from "@/components/searchBar/SearchSuggestionContainer.vue";
-import gsap from 'gsap';
-import {useClickOutside} from "@/utils/util.ts";
-import SearchHistoryContainer from "@/components/searchBar/SearchHistoryContainer.vue";
-import {useSearchHistory} from "@/composables/useSearchHistory.ts";
 
 const searchBarWrapRef = ref<HTMLElement | null>(null)
 const suggestListRef = ref<InstanceType<typeof SearchSuggestionContainer> | null>(null)
@@ -18,7 +18,7 @@ const searchVal = ref('')
 const searchOptionID = ref('bing')
 const searchURL = ref('https://www.bing.com/search?q=')
 const searchState = ref(false)
-const {addSearchHistory} = useSearchHistory()
+// 搜索引擎选项
 const searchItem = ref([
   {
     id: 'baidu',
@@ -40,24 +40,11 @@ const searchItem = ref([
   }
 ])
 
-const animateSearchBar = (isOpen: boolean) => {
-  gsap.to(".main-wrap", {
-    y: isOpen ? '-20%' : 0,
-    duration: 0.5,
-    ease: "power2.out",
-  })
-  gsap.to(".data-list-wrap",{
-    opacity: isOpen ? 1 : 0,
-    pointerEvents: isOpen ? "auto" : "none",
-    y: isOpen ? -20 : 0,
-    duration: 0.5,
-    ease: "power2.out"
-  })
-}
-
 const openSearchOptions = () => {
+  // 设置搜索引擎选项卡显示状态
   isSearchOption.value = !isSearchOption.value
 }
+// 设置搜索引擎
 const settingSearchOptions = (id: string) => {
   searchOptionID.value = id
   searchURL.value = searchItem.value.find(item => item.id === id)?.url || ''
@@ -72,31 +59,43 @@ const search = () => {
     addSearchHistory(searchVal.value)
   }
 }
+// 焦点在输入框时监听按键函数
 const handleKeyDown = (e: KeyboardEvent) => {
   if (!isHistoryShow.value && suggestListRef.value) {
+    // 搜索联想列表按键监听
     suggestListRef.value.handleKeyDownSelect(e)
   }
   if (isHistoryShow.value && historyListRef.value) {
+    // 搜索历史按键监听
     historyListRef.value.handleKeyDownSelect(e)
   }
 }
-const handleInputFocus = () => {
-  animateSearchBar(true)
-}
 useClickOutside(searchBarWrapRef, () => {
-  animateSearchBar(false)
   isSearchOption.value = false
 })
 
+const {addSearchHistory} = useSearchHistory()
+
+// 实时监视输入框内容
 watch(searchVal, (newVal) => {
+  // 输入框内容为空就显示搜索历史
   isHistoryShow.value = newVal === '';
+})
+onMounted(() => {
+  // 监听按键, tab焦点输入框
+  document.addEventListener('keydown', onSearchBarTabDown)
+  document.addEventListener("keyup", onSearchBarTabUp)
+})
+onBeforeUnmount(() => {
+  document.removeEventListener('keydown', onSearchBarTabDown)
+  document.removeEventListener("keyup", onSearchBarTabUp)
 })
 </script>
 
 <template>
-  <div class="searchBar_wrap" ref="searchBarWrapRef">
+  <div class="searchBar-wrap" ref="searchBarWrapRef">
     <div class="searchBar frosted-glass-show">
-      <div class="icon_wrap" @click="openSearchOptions">
+      <div class="icon-wrap" @click="openSearchOptions" @mousedown.prevent>
         <img :src="searchItem.find(item => item.id === searchOptionID)?.icon" alt="">
       </div>
       <input
@@ -105,26 +104,29 @@ watch(searchVal, (newVal) => {
           placeholder="输入搜索内容"
           @keyup.enter="search"
           @keydown="handleKeyDown"
+          @click="onSearchBarFocus()"
+          @blur="onSearchBarBlur()"
           autocomplete="off"
-          @focus="handleInputFocus"
       >
       <div id="search" @click="search">
         <img src="@/assets/svg/searchBar/arrow_right.svg" alt="">
       </div>
     </div>
     <search-suggestion-container
+        @mousedown.prevent
         ref="suggestListRef"
         v-model:search-val="searchVal"
         @search="search"
         v-show="!isHistoryShow"
     />
     <search-history-container
+        @mousedown.prevent
         ref="historyListRef"
         v-model:search-val="searchVal"
         @search="search"
         v-show="isHistoryShow"
     />
-    <div class="option_wrap frosted-glass-show" v-if="isSearchOption">
+    <div class="option_wrap frosted-glass-show" v-if="isSearchOption" @mousedown.prevent>
       <div class="opt" v-for="item in searchItem" :key="item.id" @click="settingSearchOptions(item.id)">
         <img :src="item.icon" alt="">
         <span>{{item.name}}</span>
@@ -134,7 +136,7 @@ watch(searchVal, (newVal) => {
 </template>
 
 <style scoped>
-.searchBar_wrap {
+.searchBar-wrap {
   position: relative;
   width: auto;
   height: auto;
@@ -174,7 +176,7 @@ watch(searchVal, (newVal) => {
 #input::placeholder {
   color: rgba(255, 255, 255, 0.5);
 }
-.icon_wrap {
+.icon-wrap {
   width: 50px;
   height: 50px;
   border-radius: 25px 0 0 25px;
@@ -183,7 +185,7 @@ watch(searchVal, (newVal) => {
   justify-content: center;
   cursor: pointer;
 }
-.icon_wrap:hover {
+.icon-wrap:hover {
   background-color: var(--color-button-elevated);
 }
 #input {

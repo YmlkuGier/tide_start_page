@@ -6,6 +6,7 @@ interface HistoryItem {
     keyword: string
 }
 
+// 搜索历史Composable
 export function useSearchHistory() {
 
     const searchHistory: Ref<HistoryItem[]> = ref([])

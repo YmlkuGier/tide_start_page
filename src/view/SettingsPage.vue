@@ -2,6 +2,7 @@
 import MenuItem from "@/components/settingPage/leftMenu/MenuItem.vue";
 import aboutIcon from '@/assets/svg/setting/menu/about.svg';
 import homeIcon from '@/assets/svg/setting/menu/home.svg';
+import tabIcon from '@/assets/svg/setting/menu/tab.svg';
 
 const menuList = [
   {
@@ -11,7 +12,7 @@ const menuList = [
   },
   {
     title: "书签栏",
-    icon: homeIcon,
+    icon: tabIcon,
     pathName: "tab-bar"
   },
   {

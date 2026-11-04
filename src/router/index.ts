@@ -1,7 +1,8 @@
 import {createRouter, createWebHashHistory} from 'vue-router';
 import Homepage from "@/view/HomePage.vue";
 import SettingsPage from "@/view/SettingsPage.vue";
-import AboutPage from "@/view/setting/AboutPage.vue";
+import AboutSettingsPage from "@/view/setting/AboutSettingsPage.vue";
+import TabBarSettingsPage from "@/view/setting/TabBarSettingsPage.vue";
 
 const routes = [
     {
@@ -18,7 +19,12 @@ const routes = [
             {
                 path: 'about',
                 name: 'about',
-                component: AboutPage
+                component: AboutSettingsPage
+            },
+            {
+                path: 'tab-bar',
+                name: 'tab-bar',
+                component: TabBarSettingsPage
             }
         ]
     }

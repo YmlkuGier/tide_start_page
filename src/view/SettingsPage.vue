@@ -10,6 +10,11 @@ const menuList = [
     pathName: "about"
   },
   {
+    title: "书签栏",
+    icon: homeIcon,
+    pathName: "tab-bar"
+  },
+  {
     title: "返回主页",
     icon: homeIcon,
     pathName: "Homepage"

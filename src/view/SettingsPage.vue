@@ -14,7 +14,7 @@ const menuList = [
   <div class="setting-page-wrap">
     <aside class="settings-sidebar">
       <RouterLink class="settings-brand" :to="{ name: 'Homepage' }" aria-label="Tide 主页">
-        <span class="brand-symbol">T</span>
+        <img src="/favicon.svg" alt="logo" class="brand-symbol"/>
         <span>Tide <small>起始页</small></span>
       </RouterLink>
       <div class="nav-label">偏好设置</div>
@@ -63,15 +63,8 @@ const menuList = [
 }
 
 .brand-symbol {
-  display: grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 12px;
-  background: #b9e8dd;
-  color: #183c34;
-  font-family: Georgia, serif;
-  font-style: italic;
+  width: 40px;
+  height: 40px;
 }
 
 .settings-brand small {

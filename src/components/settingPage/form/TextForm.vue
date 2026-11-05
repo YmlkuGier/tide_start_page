@@ -1,30 +1,14 @@
 <script setup lang="ts">
-const props = defineProps({
-  title: String,
-  content: String
-})
+defineProps<{ title: string; content: string }>()
 </script>
 
 <template>
-  <div class="setting-form-wrap" style="height: 200px" v-if="content && title">
-    <span class="setting-form-title-wrap">{{props.title}}</span>
-    <div class="setting-form-content-wrap" style="font-size: 15px">
-      <div class="text">
-        {{props.content}}
-      </div>
-    </div>
-  </div>
+  <section v-if="content && title" class="setting-form-wrap">
+    <h2 class="setting-form-title-wrap">{{ title }}</h2>
+    <div class="setting-form-content-wrap"><p class="text">{{ content }}</p></div>
+  </section>
 </template>
 
 <style scoped>
-span {
-  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
-  font-size: 18px;
-}
-.text {
-  color: var(--color-settings-form-content);
-  text-indent: 2ch;
-  font-size: 15px;
-  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
-}
+.text { margin: 0; color: var(--color-settings-form-content); font-size: 14px; line-height: 1.95; }
 </style>

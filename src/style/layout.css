@@ -1,32 +1,46 @@
 .setting-content-wrap {
-    width: 700px;
-    height: auto;
-    padding: 50px 0;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 48px 0 0;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 28px;
 }
+
 .setting-form-wrap {
     width: 100%;
-    height: auto;
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    padding: 10px;
+    gap: 12px;
 }
+
 .setting-form-title-wrap {
-    display: block;
-    margin-bottom: 8px;
+    margin: 0 4px;
     font-weight: 500;
-    letter-spacing: 1px;
-    font-size: 18px;
+    font-size: 14px;
     color: var(--color-settings-form-title);
-    margin-left: 5px;
 }
+
 .setting-form-content-wrap {
-    padding: 16px 20px;
-    background-color: var(--color-settings-form-bg);
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    transition: all 0.3s ease;
+    padding: 24px;
+    background: var(--color-settings-form-bg);
+    border: 1px solid var(--color-settings-border);
+    border-radius: 14px;
+}
+
+@media (max-width: 700px) {
+    .setting-content-wrap {
+        padding-top: 32px;
+        gap: 24px;
+    }
+
+    .settings-heading h1 {
+        font-size: 26px;
+    }
+
+    .setting-form-content-wrap {
+        padding: 20px;
+    }
 }

@@ -10,11 +10,14 @@
 
     --color-button-elevated: rgba(0, 0, 0, 0.1);
 
-    --color-settings-bg: #222222;
-    --color-settings-menu-bg: #2222222;
-    --color-settings-menu-elevated: #333333;
-    --color-settings-menu-font: #ffffff;
-    --color-settings-form-bg: #444444;
-    --color-settings-form-title: #ffffff;
-    --color-settings-form-content: #ffffffcc;
+    --color-settings-bg: #191d1e;
+    --color-settings-menu-bg: #1e2324;
+    --color-settings-menu-elevated: #ffffff08;
+    --color-settings-menu-font: #adb7b5;
+    --color-settings-form-bg: #212728;
+    --color-settings-form-title: #edf2f0;
+    --color-settings-form-content: #aab6b2;
+    --color-settings-border: #ffffff0d;
+    --color-settings-muted: #899793;
+    --color-settings-accent: #b9e8dd;
 }

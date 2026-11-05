@@ -10,5 +10,10 @@ defineProps<{ title: string; content: string }>()
 </template>
 
 <style scoped>
-.text { margin: 0; color: var(--color-settings-form-content); font-size: 14px; line-height: 1.95; }
+.text {
+  margin: 0;
+  color: var(--color-settings-form-content);
+  font-size: 14px;
+  line-height: 1.95;
+}
 </style>

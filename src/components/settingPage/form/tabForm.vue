@@ -19,10 +19,10 @@
     </div>
 
     <div class="tab-footer">
-      <div class="tab-hotkey" aria-label="快捷键 Alt 加 A">
+      <label class="tab-hotkey">
         <span>快捷键</span>
-        <div class="key-combination"><kbd>Alt</kbd><span aria-hidden="true">+</span><kbd>A</kbd></div>
-      </div>
+        <input class="key-combination" type="text" name="hotkey" value="Alt+A" autocomplete="off"/>
+      </label>
       <div class="tab-actions">
         <button class="button button-delete" type="button">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
@@ -117,7 +117,6 @@
 }
 
 .tab-hotkey,
-.key-combination,
 .tab-actions {
   display: flex;
   align-items: center;
@@ -130,20 +129,23 @@
 }
 
 .key-combination {
-  gap: 6px;
-}
-
-kbd {
-  min-width: 22px;
+  width: 100px;
+  min-width: 0;
   padding: 4px 6px;
   box-sizing: border-box;
   border: 1px solid #ffffff12;
   border-bottom-width: 2px;
   border-radius: 5px;
+  outline: none;
   background: var(--color-settings-menu-elevated);
   color: var(--color-settings-form-content);
   font: 11px / 1.2 ui-monospace, monospace;
   text-align: center;
+}
+
+.key-combination:focus {
+  border-color: var(--color-settings-accent);
+  box-shadow: 0 0 0 3px #b9e8dd12;
 }
 
 .button {
@@ -193,7 +195,7 @@ kbd {
 }
 
 @media (max-width: 440px) {
-  .tab-from-wrap {
+  .tab-form-wrap {
     padding: 20px;
   }
 

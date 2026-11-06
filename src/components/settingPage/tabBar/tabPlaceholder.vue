@@ -6,9 +6,9 @@ import tabIcon from '@/assets/svg/setting/menu/tab.svg';
 <template>
   <section class="bookmark-placeholder">
     <div class="placeholder-icon"><img :src="tabIcon" alt=""></div>
-    <h2>你的常用网站，即将就位</h2>
-    <p>书签栏设置正在开发中，后续将在这里提供自定义管理。</p>
-    <span>敬请期待</span>
+    <h2>目前没有书签</h2>
+    <p>添加书签, 可以在起始页使用热键进行跳转</p>
+    <button type="button">添加书签</button>
   </section>
 </template>
 
@@ -48,12 +48,24 @@ p {
   color: var(--color-settings-muted);
 }
 
-.bookmark-placeholder > span {
+.bookmark-placeholder > button {
   display: inline-block;
   padding: 6px 12px;
+  border: none;
   border-radius: 6px;
   background: #b9e8dd0d;
   color: var(--color-settings-accent);
+  font-family: inherit;
   font-size: 11px;
+  cursor: pointer;
+  transition: background-color .2s, transform .2s;
+}
+
+.bookmark-placeholder > button:hover {
+  background: #b9e8dd20;
+}
+
+.bookmark-placeholder > button:active {
+  transform: scale(.96);
 }
 </style>

@@ -2,11 +2,12 @@ import { db } from "@/database"
 
 export class TabRepository {
 
-    static async add(tabName: string, tabUrl: string, tabIcon: Blob) {
-        if (!tabName.trim() || !tabUrl.trim() || tabIcon.size<=0) return
+    static async add(tabName: string, tabUrl: string, tabHotkey: string, tabIcon: Blob) {
+        if (!tabName.trim() || !tabUrl.trim() || !tabHotkey.trim() || tabIcon.size<=0) return
         await db.table("tabBar").add({
             tabName: tabName,
             tabUrl: tabUrl,
+            tabHotkey: tabHotkey,
             tabIcon: tabIcon
         })
     }
@@ -20,14 +21,15 @@ export class TabRepository {
         return await db.table("tabBar").get(id)
     }
 
-    static async updateTabById(id: number, tabName: string, tabUrl: string, tabIcon: Blob) {
+    static async updateTabById(id: number, tabName: string, tabUrl: string, tabHotkey: string, tabIcon: Blob) {
         if (!id || id <= 0) return
-        if (!tabName.trim() || !tabUrl.trim() || tabIcon.size<=0) return
+        if (!tabName.trim() || !tabUrl.trim() || !tabHotkey.trim() || tabIcon.size<=0) return
         await db.table("tabBar").update(
             id,
             {
                 tabName: tabName,
                 tabUrl: tabUrl,
+                tabHotkey: tabHotkey,
                 tabIcon: tabIcon
             },
         )

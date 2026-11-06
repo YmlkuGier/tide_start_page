@@ -1,12 +1,34 @@
 <script setup lang="ts">
+import {onUnmounted, ref, watch} from "vue";
 
+const props = defineProps({
+  icon: Blob,
+  url: String,
+  tabHotkey: String,
+})
+
+const iconUrl = ref('')
+
+watch(() => props.icon, (icon) => {
+  if (iconUrl.value) {
+    URL.revokeObjectURL(iconUrl.value)
+  }
+  iconUrl.value = icon ? URL.createObjectURL(icon) : ''
+}, {immediate: true})
+
+onUnmounted(() => {
+  if (iconUrl.value) {
+    URL.revokeObjectURL(iconUrl.value)
+  }
+})
 </script>
 
 <template>
   <form class="tab-form-wrap" aria-label="编辑书签">
     <div class="tab-details">
       <div class="tab-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <img :src="iconUrl" alt="" v-show="iconUrl" style="width: 30px; height: 30px;" />
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" v-show="!iconUrl">
           <circle cx="12" cy="12" r="9"/>
           <ellipse cx="12" cy="12" rx="4" ry="9"/>
           <path d="M3 12h18"/>
@@ -14,14 +36,14 @@
       </div>
       <label class="tab-url">
         <span class="field-label">网站地址</span>
-        <input type="url" placeholder="https://example.com" autocomplete="url" required/>
+        <input type="url" placeholder="https://example.com" :value="props.url" autocomplete="url" required/>
       </label>
     </div>
 
     <div class="tab-footer">
       <label class="tab-hotkey">
         <span>快捷键</span>
-        <input class="key-combination" type="text" name="hotkey" value="Alt+A" autocomplete="off"/>
+        <input class="key-combination" type="text" name="hotkey" :value="props.tabHotkey" autocomplete="off"/>
       </label>
       <div class="tab-actions">
         <button class="button button-delete" type="button">

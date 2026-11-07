@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import tabIcon from '@/assets/svg/setting/menu/tab.svg';
 
+const emit = defineEmits<{
+  showTabFrom: []
+}>();
+
 </script>
 
 <template>
@@ -8,7 +12,7 @@ import tabIcon from '@/assets/svg/setting/menu/tab.svg';
     <div class="placeholder-icon"><img :src="tabIcon" alt=""></div>
     <h2>目前没有书签</h2>
     <p>添加书签, 可以在起始页使用热键进行跳转</p>
-    <button type="button">添加书签</button>
+    <button type="button" @click="emit('showTabFrom')">添加书签</button>
   </section>
 </template>
 

@@ -1,19 +1,46 @@
 <script setup lang="ts">
 import {onUnmounted, ref, watch} from "vue";
+import type {PropType} from "vue";
 
 const props = defineProps({
+  id: Number,
   icon: Blob,
   url: String,
   tabHotkey: String,
+  mode: {
+    type: String as PropType<'add' | 'update'>,
+    default: 'update',
+  },
 })
 
 const iconUrl = ref('')
 
-watch(() => props.icon, (icon) => {
+const icon = ref<Blob | undefined>(props.icon)
+const url = ref(props.url ?? '')
+const tabHotKey = ref(props.tabHotkey ?? '')
+
+const addTab = () => {
+  console.log("add");
+}
+
+const updateTab = () => {
+  console.log("update");
+}
+
+watch(
+    [() => props.icon, () => props.url, () => props.tabHotkey],
+    ([iconVal, urlVal, hotkeyVal]) => {
+      icon.value = iconVal
+      url.value = urlVal ?? ''
+      tabHotKey.value = hotkeyVal ?? ''
+    }
+)
+
+watch(icon, (value) => {
   if (iconUrl.value) {
     URL.revokeObjectURL(iconUrl.value)
   }
-  iconUrl.value = icon ? URL.createObjectURL(icon) : ''
+  iconUrl.value = value ? URL.createObjectURL(value) : ''
 }, {immediate: true})
 
 onUnmounted(() => {
@@ -24,7 +51,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <form class="tab-form-wrap" aria-label="编辑书签">
+  <form class="tab-form-wrap">
     <div class="tab-details">
       <div class="tab-icon" aria-hidden="true">
         <img :src="iconUrl" alt="" v-show="iconUrl" style="width: 30px; height: 30px;" />
@@ -36,23 +63,25 @@ onUnmounted(() => {
       </div>
       <label class="tab-url">
         <span class="field-label">网站地址</span>
-        <input type="url" placeholder="https://example.com" :value="props.url" autocomplete="url" required/>
+        <input v-model="url" type="url" placeholder="https://example.com" autocomplete="url" required />
       </label>
     </div>
 
     <div class="tab-footer">
       <label class="tab-hotkey">
         <span>快捷键</span>
-        <input class="key-combination" type="text" name="hotkey" :value="props.tabHotkey" autocomplete="off"/>
+        <input v-model="tabHotKey" class="key-combination" type="text" name="hotkey" autocomplete="off"/>
       </label>
       <div class="tab-actions">
-        <button class="button button-delete" type="button">
+        <button v-if="props.mode === 'update'" class="button button-delete" type="button">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
             <path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 10v7m4-7v7" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           删除
         </button>
-        <button class="button button-update" type="submit">更新书签</button>
+        <button class="button button-update" @click="props.mode === 'add' ? addTab() : updateTab()">
+          {{ props.mode === 'add' ? '添加书签' : '更新书签' }}
+        </button>
       </div>
     </div>
   </form>

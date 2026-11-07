@@ -5,6 +5,7 @@ import type {PropType} from "vue";
 const props = defineProps({
   id: Number,
   icon: Blob,
+  name: String,
   url: String,
   tabHotkey: String,
   mode: {
@@ -16,6 +17,7 @@ const props = defineProps({
 const iconUrl = ref('')
 
 const icon = ref<Blob | undefined>(props.icon)
+const name = ref(props.name ?? '')
 const url = ref(props.url ?? '')
 const tabHotKey = ref(props.tabHotkey ?? '')
 
@@ -28,11 +30,12 @@ const updateTab = () => {
 }
 
 watch(
-    [() => props.icon, () => props.url, () => props.tabHotkey],
-    ([iconVal, urlVal, hotkeyVal]) => {
+    [() => props.icon, () => props.url, () => props.tabHotkey, () => props.name],
+    ([iconVal, urlVal, hotkeyVal, nameVal]) => {
       icon.value = iconVal
       url.value = urlVal ?? ''
       tabHotKey.value = hotkeyVal ?? ''
+      name.value = nameVal ?? ''
     }
 )
 
@@ -62,10 +65,15 @@ onUnmounted(() => {
         </svg>
       </div>
       <label class="tab-url">
-        <span class="field-label">网站地址</span>
-        <input v-model="url" type="url" placeholder="https://example.com" autocomplete="url" required />
+        <span class="field-label">书签名</span>
+        <input v-model="name" type="text" name="name" placeholder="请输入书签名" required />
       </label>
     </div>
+
+    <label class="tab-url tab-name">
+      <span class="field-label">网站地址</span>
+      <input v-model="url" type="url" placeholder="https://example.com" autocomplete="url" required />
+    </label>
 
     <div class="tab-footer">
       <label class="tab-hotkey">
@@ -126,6 +134,10 @@ onUnmounted(() => {
   min-width: 0;
   flex-direction: column;
   gap: 8px;
+}
+
+.tab-name {
+  margin-top: 16px;
 }
 
 .field-label {

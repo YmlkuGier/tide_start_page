@@ -23,7 +23,7 @@ const showTabForm = () => {
           v-if="!isTabForm"
           @show-tab-from="showTabForm()"
       />
-      <tab-form v-else mode="update" />
+      <tab-form v-else mode="add" />
     </Transition>
   </div>
 </template>

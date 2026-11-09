@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {onUnmounted, ref, watch} from "vue";
 import type {PropType} from "vue";
+import {TabRepository} from "@/database/tab.ts";
 
 const props = defineProps({
   id: Number,
@@ -21,8 +22,20 @@ const name = ref(props.name ?? '')
 const url = ref(props.url ?? '')
 const tabHotKey = ref(props.tabHotkey ?? '')
 
-const addTab = () => {
-  console.log("add");
+const addTab = async () => {
+  // 获取网站图标
+  const response = await fetch(`/ico/get.php?url=${url.value}`)
+  if (!response.ok) throw new Error('获取网站图标失败')
+
+  // 获取到Blob
+  const iconBlob = await response.blob()
+  if (!iconBlob.type.startsWith('image/') || iconBlob.size === 0) {
+    throw new Error('未获取到有效的网站图标')
+  }
+
+  await TabRepository.add(name.value, url.value, tabHotKey.value, iconBlob)
+
+  window.location.reload()
 }
 
 const updateTab = () => {
@@ -54,7 +67,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <form class="tab-form-wrap">
+  <div class="tab-form-wrap">
     <div class="tab-details">
       <div class="tab-icon" aria-hidden="true">
         <img :src="iconUrl" alt="" v-show="iconUrl" style="width: 30px; height: 30px;" />
@@ -92,7 +105,7 @@ onUnmounted(() => {
         </button>
       </div>
     </div>
-  </form>
+  </div>
 </template>
 
 <style scoped>

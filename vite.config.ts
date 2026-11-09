@@ -28,6 +28,11 @@ export default defineConfig({
         target: 'https://suggestion.baidu.com',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/baidu/, ''),
+      },
+      '/ico': {
+        target: 'https://ico.kucat.cn',
+        changeOrigin: true, // 关键：修改请求头中的 Origin，伪装请求来源
+        rewrite: (path) => path.replace(/^\/ico/, '') // 路径重写，移除 /api 前缀
       }
     }
   }

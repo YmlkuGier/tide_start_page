@@ -1,30 +1,53 @@
 <script setup lang="ts">
-
 import TabItem from "@/components/tabBar/TabItem.vue";
+import {TabRepository} from "@/database/tab.ts";
+import {onMounted, ref} from "vue";
+
+const tabItemList = ref()
+
+onMounted(() => {
+  TabRepository.getAll().then((res) => {
+    tabItemList.value = res;
+    console.log(tabItemList.value);
+  })
+})
 </script>
 
 <template>
-<div class="tabBar-wrap">
-  <tab-item v-for="item in [1, 2, 3]" :key="item"  />
+<div v-if="tabItemList?.length" class="tabBar-wrap">
+  <tab-item
+      v-for="item in tabItemList"
+      :key="item.id"
+      :tab-hotkey="item.tabHotkey"
+      :tab-icon="item.tabIcon"
+      :tab-name="item.tabName"
+      :tab-url="item.tabUrl"
+  />
 </div>
 </template>
 
 <style scoped>
 .tabBar-wrap {
-  height: 56px;
-  width: auto;
-  min-width: 200px;
-  max-width: 600px;
-  padding: 0 16px;
-  border-radius: 24px;
-  background-color: #fff;
+  box-sizing: border-box;
+  min-width: 100px;
+  max-width: min(600px, calc(100vw - 24px));
+  padding: 8px 16px;
+
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 23px;
+  background: rgba(17, 25, 40, 0.46);
+  box-shadow: 0 12px 32px rgba(12, 25, 40, 0.28), inset 0 1px rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
 
   display: flex;
+  justify-content: center;
   align-items: center;
-  flex-direction: row;
   gap: 12px;
-  overflow: hidden;
-  justify-content: safe center;
+}
+
+.tabBar-wrap::-webkit-scrollbar {
+  display: none;
 }
 
 .tabBar-wrap > * {

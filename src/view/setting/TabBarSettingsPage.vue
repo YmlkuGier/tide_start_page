@@ -37,6 +37,7 @@ onMounted(async () => {
         <tab-form
             v-for="item in tabList"
             :key="item.id"
+            :id="item.id"
             :tab-hotkey="item.tabHotkey"
             :icon="item.tabIcon"
             :name="item.tabName"

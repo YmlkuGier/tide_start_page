@@ -41,8 +41,18 @@ const addTab = async () => {
   window.location.reload()
 }
 
-const updateTab = () => {
-  console.log("update");
+const updateTab = async () => {
+  if (props.id === undefined) return
+
+  await TabRepository.updateTabById(
+      props.id,
+      name.value,
+      url.value,
+      tabHotKey.value,
+      icon.value ?? null,
+  )
+
+  console.log(url.value)
 }
 
 watch(

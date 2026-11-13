@@ -21,9 +21,9 @@ export class TabRepository {
         return await db.table("tabBar").get(id)
     }
 
-    static async updateTabById(id: number, tabName: string, tabUrl: string, tabHotkey: string, tabIcon: Blob) {
+    static async updateTabById(id: number, tabName: string, tabUrl: string, tabHotkey: string, tabIcon: Blob | null) {
         if (!id || id <= 0) return
-        if (!tabName.trim() || !tabUrl.trim() || !tabHotkey.trim() || tabIcon.size<=0) return
+        if (!tabName.trim() || !tabUrl.trim() || !tabHotkey.trim()) return
         await db.table("tabBar").update(
             id,
             {

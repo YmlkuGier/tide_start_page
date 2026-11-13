@@ -3,7 +3,7 @@ import {onUnmounted, ref, watch} from "vue";
 
 const props = defineProps({
   tabHotkey: String,
-  tabIcon: Blob,
+  tabIcon: {type: Blob, default: null},
   tabName: String,
   tabUrl: {type: String, default: ""},
 })
@@ -31,6 +31,7 @@ onUnmounted(() => {
 <template>
   <div class="tabItem-wrap" @click="openPage(props.tabUrl)">
     <img v-if="iconUrl" :src="iconUrl" alt=""/>
+    <img v-else src="@/assets/svg/tabBar/icon.svg" alt="">
   </div>
 </template>
 

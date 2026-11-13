@@ -23,14 +23,17 @@ const url = ref(props.url ?? '')
 const tabHotKey = ref(props.tabHotkey ?? '')
 
 const addTab = async () => {
-  // 获取网站图标
-  const response = await fetch(`/ico/get.php?url=${url.value}`)
-  if (!response.ok) throw new Error('获取网站图标失败')
-
-  // 获取到Blob
-  const iconBlob = await response.blob()
-  if (!iconBlob.type.startsWith('image/') || iconBlob.size === 0) {
-    throw new Error('未获取到有效的网站图标')
+  let iconBlob: Blob | null = null
+  try {
+    const response = await fetch(`/ico/get.php?url=${url.value}`)
+    if (response.ok) {
+      const fetchedIcon = await response.blob()
+      if (fetchedIcon.type.startsWith('image/') && fetchedIcon.size > 0) {
+        iconBlob = fetchedIcon
+      }
+    }
+  } catch {
+    iconBlob = null
   }
 
   await TabRepository.add(name.value, url.value, tabHotKey.value, iconBlob)

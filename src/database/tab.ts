@@ -2,8 +2,8 @@ import { db } from "@/database"
 
 export class TabRepository {
 
-    static async add(tabName: string, tabUrl: string, tabHotkey: string, tabIcon: Blob) {
-        if (!tabName.trim() || !tabUrl.trim() || !tabHotkey.trim() || tabIcon.size<=0) return
+    static async add(tabName: string, tabUrl: string, tabHotkey: string, tabIcon: Blob | null) {
+        if (!tabName.trim() || !tabUrl.trim() || !tabHotkey.trim()) return
         await db.table("tabBar").add({
             tabName: tabName,
             tabUrl: tabUrl,

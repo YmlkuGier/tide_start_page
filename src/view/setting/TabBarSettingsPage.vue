@@ -2,13 +2,22 @@
 import SettingsHeading from "@/components/settingPage/settingsHeading.vue";
 import TabPlaceholder from "@/components/settingPage/tabBar/tabPlaceholder.vue";
 import TabForm from "@/components/settingPage/form/tabForm.vue";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
+import {TabRepository} from "@/database/tab.ts";
 
-const isTabForm = ref(false);
+const isTabForm = ref(false)
+const tabList = ref()
 
 const showTabForm = () => {
-  isTabForm.value = true;
+  isTabForm.value = true
 }
+
+onMounted(async () => {
+  tabList.value = await TabRepository.getAll()
+  if (tabList.value.length > 0) {
+    isTabForm.value = true
+  }
+})
 </script>
 
 <template>
@@ -23,12 +32,29 @@ const showTabForm = () => {
           v-if="!isTabForm"
           @show-tab-from="showTabForm()"
       />
-      <tab-form v-else mode="add" />
+      <div v-else class="tab-form-list">
+        <tab-form mode="add" />
+        <tab-form
+            v-for="item in tabList"
+            :key="item.id"
+            :tab-hotkey="item.tabHotkey"
+            :icon="item.tabIcon"
+            :name="item.tabName"
+            :url="item.tabUrl"
+            mode="update"
+        />
+      </div>
     </Transition>
   </div>
 </template>
 
 <style scoped>
+.tab-form-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .tab-form-enter-active,
 .tab-form-leave-active {
   transition: opacity .2s ease;

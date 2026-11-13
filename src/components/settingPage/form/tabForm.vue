@@ -5,7 +5,7 @@ import {TabRepository} from "@/database/tab.ts";
 
 const props = defineProps({
   id: Number,
-  icon: Blob,
+  icon: Object as PropType<Blob>,
   name: String,
   url: String,
   tabHotkey: String,
@@ -52,7 +52,13 @@ const updateTab = async () => {
       icon.value ?? null,
   )
 
-  console.log(url.value)
+  window.location.reload()
+}
+
+const deleteTab = async (id?: number) => {
+  if (id == null) return
+  await TabRepository.delete(id)
+  window.location.reload()
 }
 
 watch(
@@ -107,7 +113,7 @@ onUnmounted(() => {
         <input v-model="tabHotKey" class="key-combination" type="text" name="hotkey" autocomplete="off"/>
       </label>
       <div class="tab-actions">
-        <button v-if="props.mode === 'update'" class="button button-delete" type="button">
+        <button v-if="props.mode === 'update'" class="button button-delete" type="button" @click="deleteTab(props.id)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
             <path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 10v7m4-7v7" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>

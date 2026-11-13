@@ -44,6 +44,14 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   gap: 12px;
+  transition: translate .2s ease, background-color .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.tabBar-wrap:hover {
+  translate: 0 -3px;
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(17, 25, 40, 0.58);
+  box-shadow: 0 16px 38px rgba(12, 25, 40, 0.36), inset 0 1px rgba(255, 255, 255, 0.18);
 }
 
 .tabBar-wrap::-webkit-scrollbar {
@@ -52,5 +60,15 @@ onMounted(() => {
 
 .tabBar-wrap > * {
   flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tabBar-wrap {
+    transition: none;
+  }
+
+  .tabBar-wrap:hover {
+    translate: none;
+  }
 }
 </style>

@@ -5,10 +5,14 @@ const props = defineProps({
   tabHotkey: String,
   tabIcon: Blob,
   tabName: String,
-  tabUrl: String
+  tabUrl: {type: String, default: ""},
 })
 
 const iconUrl = ref('')
+
+const openPage = (url: string) => {
+  location.assign(url)
+}
 
 watch(() => props.tabIcon, (icon) => {
   if (iconUrl.value) {
@@ -25,7 +29,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="tabItem-wrap">
+  <div class="tabItem-wrap" @click="openPage(props.tabUrl)">
     <img v-if="iconUrl" :src="iconUrl" alt=""/>
   </div>
 </template>

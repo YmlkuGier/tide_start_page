@@ -2,6 +2,7 @@
 import {onUnmounted, ref, watch} from "vue";
 import type {PropType} from "vue";
 import {TabRepository} from "@/database/tab.ts";
+import KeyCombinationInput from "@/components/settingPage/form/KeyCombinationInput.vue";
 
 const props = defineProps({
   id: Number,
@@ -110,7 +111,12 @@ onUnmounted(() => {
     <div class="tab-footer">
       <label class="tab-hotkey">
         <span>快捷键</span>
-        <input v-model="tabHotKey" class="key-combination" type="text" name="hotkey" autocomplete="off"/>
+        <KeyCombinationInput
+            v-model="tabHotKey"
+            class="key-combination"
+            name="hotkey"
+            autocomplete="off"
+        />
       </label>
       <div class="tab-actions">
         <button v-if="props.mode === 'update'" class="button button-delete" type="button" @click="deleteTab(props.id)">

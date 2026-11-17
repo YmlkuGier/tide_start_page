@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import {keyLabels} from "@/utils/util.ts";
+
 defineOptions({inheritAttrs: false})
 
 const props = defineProps<{
@@ -10,34 +12,6 @@ const emit = defineEmits<{
 }>()
 
 const modifierKeys = new Set(['Control', 'Alt', 'Shift', 'Meta'])
-
-const keyLabels: Record<string, string> = {
-  ' ': 'Space',
-  Escape: 'Esc',
-  ArrowDown: 'ArrowDown',
-  ArrowLeft: 'ArrowLeft',
-  ArrowRight: 'ArrowRight',
-  ArrowUp: 'ArrowUp',
-  Backquote: 'Backquote',
-  Backspace: 'Backspace',
-  Delete: 'Delete',
-  Enter: 'Enter',
-  Insert: 'Insert',
-  PageDown: 'PageDown',
-  PageUp: 'PageUp',
-  Tab: 'Tab',
-  '+': 'Plus',
-  '-': 'Minus',
-  '=': 'Equal',
-  ',': 'Comma',
-  '.': 'Period',
-  '/': 'Slash',
-  '\\': 'Backslash',
-  ';': 'Semicolon',
-  "'": 'Quote',
-  '[': 'BracketLeft',
-  ']': 'BracketRight',
-}
 
 const formatKey = (key: string) => {
   if (keyLabels[key]) return keyLabels[key]

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import {onUnmounted, ref, watch} from "vue";
+import {onMounted, onUnmounted, ref, watch} from "vue";
+import {keyLabels} from "@/utils/util.ts";
 
 const props = defineProps({
   tabHotkey: String,
@@ -14,6 +15,25 @@ const openPage = (url: string) => {
   location.assign(url)
 }
 
+// 监听快捷键打开书签
+const onKeyDown = (e: KeyboardEvent) => {
+  if (!props.tabHotkey?.trim() || !props.tabUrl || e.defaultPrevented || e.isComposing || e.repeat) return
+  if (['Control', 'Alt', 'Shift', 'Meta'].includes(e.key)) return
+
+  const pressedKeys: string[] = []
+  if (e.ctrlKey) pressedKeys.push('ctrl')
+  if (e.altKey) pressedKeys.push('alt')
+  if (e.shiftKey) pressedKeys.push('shift')
+  if (e.metaKey) pressedKeys.push('meta')
+  pressedKeys.push((keyLabels[e.key] ?? e.key).toLowerCase())
+
+  const hotkeyKeys = props.tabHotkey.split('+').map(key => key.trim().toLowerCase())
+  if (pressedKeys.sort().join('+') !== hotkeyKeys.sort().join('+')) return
+
+  e.preventDefault()
+  openPage(props.tabUrl)
+}
+
 watch(() => props.tabIcon, (icon) => {
   if (iconUrl.value) {
     URL.revokeObjectURL(iconUrl.value)
@@ -21,7 +41,12 @@ watch(() => props.tabIcon, (icon) => {
   iconUrl.value = icon ? URL.createObjectURL(icon) : ''
 }, {immediate: true})
 
+onMounted(() => {
+  document.addEventListener('keydown', onKeyDown)
+})
+
 onUnmounted(() => {
+  document.removeEventListener('keydown', onKeyDown)
   if (iconUrl.value) {
     URL.revokeObjectURL(iconUrl.value)
   }

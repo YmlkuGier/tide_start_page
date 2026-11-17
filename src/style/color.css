@@ -20,4 +20,14 @@
     --color-settings-border: #ffffff0d;
     --color-settings-muted: #899793;
     --color-settings-accent: #b9e8dd;
+
+    --color-notification-bg: #1e2526;
+    --color-notification-border: #ffffff1a;
+    --color-notification-shadow: #00000033;
+    --color-notification-title: #edf2f0;
+    --color-notification-text: #adb7b5;
+    --color-notification-close: #899793;
+    --color-notification-success: #71c9a5;
+    --color-notification-warning: #f1bf70;
+    --color-notification-error: #ee8f8f;
 }

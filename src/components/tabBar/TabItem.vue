@@ -32,11 +32,13 @@ onUnmounted(() => {
   <div class="tabItem-wrap" @click="openPage(props.tabUrl)">
     <img v-if="iconUrl" :src="iconUrl" alt=""/>
     <img v-else src="@/assets/svg/tabBar/icon.svg" alt="">
+    <span class="tabName">{{ props.tabName }}</span>
   </div>
 </template>
 
 <style scoped>
 .tabItem-wrap {
+  position: relative;
   box-sizing: border-box;
   width: 40px;
   height: 40px;
@@ -63,6 +65,37 @@ onUnmounted(() => {
   object-position: center;
 }
 
+.tabName {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  z-index: 1;
+  max-width: 180px;
+  padding: 4px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  background: rgba(17, 25, 40, 0.9);
+  box-shadow: 0 6px 16px rgba(12, 25, 40, 0.28);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+  opacity: 1;
+  visibility: hidden;
+  transform: translate(-50%, -4px);
+  transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
+}
+
+.tabItem-wrap:hover .tabName {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tabItem-wrap {
     transition: none;
@@ -70,6 +103,10 @@ onUnmounted(() => {
 
   .tabItem-wrap:hover {
     transform: none;
+  }
+
+  .tabName {
+    transition: none;
   }
 }
 </style>

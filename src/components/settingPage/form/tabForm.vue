@@ -44,7 +44,13 @@ const resetForm = (): void => {
 const addTab = async () => {
   let iconBlob: Blob | null = null
   try {
-    const response = await fetch(`/ico/get.php?url=${url.value}`)
+    const isExtension = window.location.protocol === 'chrome-extension:' ||
+        window.location.protocol === 'moz-extension:' ||
+        window.location.protocol === 'safari-extension:'
+    const apiUrl = isExtension
+        ? `https://ico.kucat.cn/get.php?url=${url.value}`
+        : `/ico/get.php?url=${url.value}`
+    const response = await fetch(apiUrl)
     if (response.ok) {
       const fetchedIcon = await response.blob()
       if (fetchedIcon.type.startsWith('image/') && fetchedIcon.size > 0) {

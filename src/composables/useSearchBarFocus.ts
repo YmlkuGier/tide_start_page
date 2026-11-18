@@ -22,12 +22,6 @@ function onSearchBarTabDown(event: KeyboardEvent) {
     }
 }
 function onSearchBarTabUp(event: KeyboardEvent) {
-    console.log('onTabUp called', {
-        key: event.key,
-        target: event.target,
-        currentTarget: event.currentTarget,
-        timestamp: Date.now()
-    });
     if (event.key === 'Tab') {
         event.preventDefault();
         event.stopPropagation();
@@ -38,7 +32,6 @@ function onSearchBarTabUp(event: KeyboardEvent) {
             document.getElementById("input")?.focus()
             animateSearchBar(true)
         }
-        console.log("pront")
     }
 }
 function onSearchBarFocus() {

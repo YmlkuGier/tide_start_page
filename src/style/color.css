@@ -9,6 +9,13 @@
     --color-search-suggest-font: rgba(255, 255, 255, 0.8);
 
     --color-button-elevated: rgba(0, 0, 0, 0.1);
+    --color-setting-button-bg: rgba(17, 25, 40, 0.42);
+    --color-setting-button-shadow: 0 8px 24px rgba(12, 25, 40, 0.28), inset 0 1px rgba(255, 255, 255, 0.14);
+    --color-setting-button-hover-border: rgba(255, 255, 255, 0.42);
+    --color-setting-button-hover-bg: rgba(17, 25, 40, 0.62);
+    --color-setting-button-hover-shadow: 0 12px 30px rgba(12, 25, 40, 0.38), inset 0 1px rgba(255, 255, 255, 0.2);
+    --color-setting-button-focus-outline: rgba(255, 255, 255, 0.85);
+    --color-setting-button-border: rgba(255, 255, 255, 0.24);
 
     --color-settings-bg: #191d1e;
     --color-settings-menu-bg: #1e2324;

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import router from "@/router";
 import SearchBar from "@/components/searchBar/SearchBar.vue";
 import Logo from "@/components/logo.vue";
 import TabBar from "@/components/tabBar/TabBar.vue";
+import SettingButton from "@/components/searchBar/SettingButton.vue";
 
 </script>
 
@@ -15,9 +15,7 @@ import TabBar from "@/components/tabBar/TabBar.vue";
       <logo />
       <search-bar />
     </div>
-    <div class="setting-wrap" @click="router.push('/settings')">
-      <img src="@/assets/svg/setting.svg" alt="">
-    </div>
+    <setting-button />
     <tab-bar class="tab-bar" />
   </div>
 </template>
@@ -52,22 +50,6 @@ import TabBar from "@/components/tabBar/TabBar.vue";
     height: 100vh;
     object-fit: cover;
   }
-}
-.setting-wrap {
-  width: 40px;
-  height: 40px;
-  border-radius: 20px;
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  cursor: pointer;
-  img {
-    width: 100%;
-    height: 100%;
-  }
-}
-.setting-wrap:hover {
-  background-color: var(--color-button-elevated);
 }
 img {
   user-select: none;

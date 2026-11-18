@@ -1,6 +1,7 @@
 import { db } from "@/database"
 import {notify} from "@/components/notification";
 
+// 书签栏数据库控制函数
 export class TabRepository {
 
     static async add(tabName: string, tabUrl: string, tabHotkey: string, tabIcon: Blob | null): Promise<boolean> {

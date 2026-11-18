@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import tabIcon from '@/assets/svg/setting/menu/tab.svg';
 
+// 向父组件提出显示书签表单函数
 const emit = defineEmits<{
   showTabFrom: []
 }>();

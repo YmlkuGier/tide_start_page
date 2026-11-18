@@ -6,6 +6,7 @@ import {onMounted, ref} from "vue";
 const tabItemList = ref()
 
 onMounted(() => {
+  // 获取书签栏内容列表
   TabRepository.getAll().then((res) => {
     tabItemList.value = res;
     console.log(tabItemList.value);

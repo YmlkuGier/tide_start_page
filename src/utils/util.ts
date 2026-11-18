@@ -40,6 +40,7 @@ export const debounce = (
     }
 }
 
+// 键盘按键映射
 export const keyLabels: Record<string, string> = {
     ' ': 'Space',
     Escape: 'Esc',

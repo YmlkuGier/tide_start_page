@@ -1,5 +1,6 @@
 import { db } from "@/database"
 
+// 历史记录数据库控制函数
 export class HistoryRepository {
 
     static async add(keyword: string) {

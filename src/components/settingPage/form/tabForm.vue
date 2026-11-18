@@ -20,13 +20,19 @@ const emit = defineEmits<{
   saved: []
 }>()
 
+// 图标本地链接
 const iconUrl = ref('')
 
+// 图标Blob文件
 const icon = ref<Blob | undefined>(props.icon)
+// 书签名
 const name = ref(props.name ?? '')
+// 书签指向链接
 const url = ref(props.url ?? '')
+// 触发跳转书签地址的热键
 const tabHotKey = ref(props.tabHotkey ?? '')
 
+// 清空创建书签表单
 const resetForm = (): void => {
   icon.value = undefined
   name.value = ''
@@ -34,6 +40,7 @@ const resetForm = (): void => {
   tabHotKey.value = ''
 }
 
+// 添加书签
 const addTab = async () => {
   let iconBlob: Blob | null = null
   try {
@@ -55,6 +62,7 @@ const addTab = async () => {
   }
 }
 
+// 更新书签
 const updateTab = async () => {
   if (props.id === undefined) return
   const result = await TabRepository.updateTabById(
@@ -69,6 +77,7 @@ const updateTab = async () => {
   }
 }
 
+// 删除书签
 const deleteTab = async (id?: number) => {
   if (id == null) return
   const result = await TabRepository.delete(id)
@@ -77,6 +86,7 @@ const deleteTab = async (id?: number) => {
   }
 }
 
+// 监听表单的各个值来同步提交的值
 watch(
     [() => props.icon, () => props.url, () => props.tabHotkey, () => props.name],
     ([iconVal, urlVal, hotkeyVal, nameVal]) => {
@@ -87,6 +97,7 @@ watch(
     }
 )
 
+// 监听icon文件生成icon的url的链接
 watch(icon, (value) => {
   if (iconUrl.value) {
     URL.revokeObjectURL(iconUrl.value)

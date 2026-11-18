@@ -4,6 +4,7 @@ import MenuItem from "@/components/settingPage/leftMenu/MenuItem.vue";
 import aboutIcon from "@/assets/svg/setting/menu/about.svg";
 import tabIcon from "@/assets/svg/setting/menu/tab.svg";
 
+// 侧边栏显示的内容
 const menuList = [
   {title: "关于 Tide", icon: aboutIcon, pathName: "about"},
   {title: "书签栏", icon: tabIcon, pathName: "tab-bar"}

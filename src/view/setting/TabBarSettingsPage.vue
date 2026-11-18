@@ -8,10 +8,12 @@ import {TabRepository} from "@/database/tab.ts";
 const isTabForm = ref(false)
 const tabList = ref()
 
+// 显示书签栏列表
 const showTabForm = () => {
   isTabForm.value = true
 }
 
+// 重新加载书签列表
 const loadTabList = async () => {
   tabList.value = await TabRepository.getAll()
   if (tabList.value.length > 0) {

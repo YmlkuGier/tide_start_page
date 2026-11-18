@@ -42,6 +42,9 @@ const menuList = [
 
 .settings-sidebar {
   width: 248px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
   flex-shrink: 0;
   padding: 36px 18px 20px;
   box-sizing: border-box;
@@ -120,6 +123,8 @@ const menuList = [
 
   .settings-sidebar {
     width: 100%;
+    height: auto;
+    position: static;
     padding: 20px;
     border-right: 0;
     border-bottom: 1px solid var(--color-settings-border);

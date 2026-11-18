@@ -12,12 +12,14 @@ const showTabForm = () => {
   isTabForm.value = true
 }
 
-onMounted(async () => {
+const loadTabList = async () => {
   tabList.value = await TabRepository.getAll()
   if (tabList.value.length > 0) {
     isTabForm.value = true
   }
-})
+}
+
+onMounted(loadTabList)
 </script>
 
 <template>
@@ -33,7 +35,7 @@ onMounted(async () => {
           @show-tab-from="showTabForm()"
       />
       <div v-else class="tab-form-list">
-        <tab-form mode="add" />
+        <tab-form mode="add" @saved="loadTabList" />
         <tab-form
             v-for="item in tabList"
             :key="item.id"
@@ -43,6 +45,7 @@ onMounted(async () => {
             :name="item.tabName"
             :url="item.tabUrl"
             mode="update"
+            @saved="loadTabList"
         />
       </div>
     </Transition>

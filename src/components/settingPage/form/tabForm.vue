@@ -16,12 +16,23 @@ const props = defineProps({
   },
 })
 
+const emit = defineEmits<{
+  saved: []
+}>()
+
 const iconUrl = ref('')
 
 const icon = ref<Blob | undefined>(props.icon)
 const name = ref(props.name ?? '')
 const url = ref(props.url ?? '')
 const tabHotKey = ref(props.tabHotkey ?? '')
+
+const resetForm = (): void => {
+  icon.value = undefined
+  name.value = ''
+  url.value = ''
+  tabHotKey.value = ''
+}
 
 const addTab = async () => {
   let iconBlob: Blob | null = null
@@ -37,29 +48,33 @@ const addTab = async () => {
     iconBlob = null
   }
 
-  await TabRepository.add(name.value, url.value, tabHotKey.value, iconBlob)
-
-  window.location.reload()
+  const result = await TabRepository.add(name.value, url.value, tabHotKey.value, iconBlob)
+  if (result) {
+    resetForm()
+    emit('saved')
+  }
 }
 
 const updateTab = async () => {
   if (props.id === undefined) return
-
-  await TabRepository.updateTabById(
+  const result = await TabRepository.updateTabById(
       props.id,
       name.value,
       url.value,
       tabHotKey.value,
       icon.value ?? null,
   )
-
-  window.location.reload()
+  if (result) {
+    emit('saved')
+  }
 }
 
 const deleteTab = async (id?: number) => {
   if (id == null) return
-  await TabRepository.delete(id)
-  window.location.reload()
+  const result = await TabRepository.delete(id)
+  if (result) {
+    emit('saved')
+  }
 }
 
 watch(

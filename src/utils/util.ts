@@ -39,3 +39,32 @@ export const debounce = (
         }, delay)
     }
 }
+
+// 键盘按键映射
+export const keyLabels: Record<string, string> = {
+    ' ': 'Space',
+    Escape: 'Esc',
+    ArrowDown: 'ArrowDown',
+    ArrowLeft: 'ArrowLeft',
+    ArrowRight: 'ArrowRight',
+    ArrowUp: 'ArrowUp',
+    Backquote: 'Backquote',
+    Backspace: 'Backspace',
+    Delete: 'Delete',
+    Enter: 'Enter',
+    Insert: 'Insert',
+    PageDown: 'PageDown',
+    PageUp: 'PageUp',
+    Tab: 'Tab',
+    '+': 'Plus',
+    '-': 'Minus',
+    '=': 'Equal',
+    ',': 'Comma',
+    '.': 'Period',
+    '/': 'Slash',
+    '\\': 'Backslash',
+    ';': 'Semicolon',
+    "'": 'Quote',
+    '[': 'BracketLeft',
+    ']': 'BracketRight',
+}

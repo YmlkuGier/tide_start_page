@@ -9,12 +9,32 @@
     --color-search-suggest-font: rgba(255, 255, 255, 0.8);
 
     --color-button-elevated: rgba(0, 0, 0, 0.1);
+    --color-setting-button-bg: rgba(17, 25, 40, 0.42);
+    --color-setting-button-shadow: 0 8px 24px rgba(12, 25, 40, 0.28), inset 0 1px rgba(255, 255, 255, 0.14);
+    --color-setting-button-hover-border: rgba(255, 255, 255, 0.42);
+    --color-setting-button-hover-bg: rgba(17, 25, 40, 0.62);
+    --color-setting-button-hover-shadow: 0 12px 30px rgba(12, 25, 40, 0.38), inset 0 1px rgba(255, 255, 255, 0.2);
+    --color-setting-button-focus-outline: rgba(255, 255, 255, 0.85);
+    --color-setting-button-border: rgba(255, 255, 255, 0.24);
 
-    --color-settings-bg: #222222;
-    --color-settings-menu-bg: #2222222;
-    --color-settings-menu-elevated: #333333;
-    --color-settings-menu-font: #ffffff;
-    --color-settings-form-bg: #444444;
-    --color-settings-form-title: #ffffff;
-    --color-settings-form-content: #ffffffcc;
+    --color-settings-bg: #191d1e;
+    --color-settings-menu-bg: #1e2324;
+    --color-settings-menu-elevated: #ffffff08;
+    --color-settings-menu-font: #adb7b5;
+    --color-settings-form-bg: #212728;
+    --color-settings-form-title: #edf2f0;
+    --color-settings-form-content: #aab6b2;
+    --color-settings-border: #ffffff0d;
+    --color-settings-muted: #899793;
+    --color-settings-accent: #b9e8dd;
+
+    --color-notification-bg: #1e2526;
+    --color-notification-border: #ffffff1a;
+    --color-notification-shadow: #00000033;
+    --color-notification-title: #edf2f0;
+    --color-notification-text: #adb7b5;
+    --color-notification-close: #899793;
+    --color-notification-success: #71c9a5;
+    --color-notification-warning: #f1bf70;
+    --color-notification-error: #ee8f8f;
 }

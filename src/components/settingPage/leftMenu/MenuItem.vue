@@ -1,43 +1,60 @@
 <script setup lang="ts">
-const props = defineProps({
-  title: String,
-  icon: String,
-  pathName: String
-})
+defineProps<{ title: string; icon: string; pathName: string }>()
 </script>
 
 <template>
-  <div class="menu-item-wrap" @click="$router.push({ name: props.pathName })">
-    <img class="menu-item-icon" :src="props.icon" alt="">
-    <div class="menu-item-title">{{ props.title }}</div>
-  </div>
+  <RouterLink class="menu-item-wrap" active-class="is-active" :to="{ name: pathName }">
+    <img class="menu-item-icon" :src="icon" alt="">
+    <span>{{ title }}</span>
+    <span class="active-dot" aria-hidden="true"></span>
+  </RouterLink>
 </template>
 
 <style scoped>
 .menu-item-wrap {
-  height: 50px;
-  width: 100%;
-  padding: 0 20px;
-  box-sizing: border-box;
-  border-radius: 0 25px 25px 0;
+  min-height: 46px;
+  padding: 0 14px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  cursor: pointer;
-}
-.menu-item-wrap:hover {
-  background-color: var(--color-settings-menu-elevated);
-}
-.menu-item-icon {
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
-  user-select: none;
-}
-.menu-item-title {
+  gap: 12px;
   color: var(--color-settings-menu-font);
-  user-select: none;
-  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
-  font-size: 14px;
+  text-decoration: none;
+  font-size: 13px;
+  transition: background .2s, color .2s;
+}
+
+.menu-item-wrap:hover {
+  background: var(--color-settings-menu-elevated);
+  color: #fff;
+}
+
+.menu-item-wrap:focus-visible {
+  outline: 2px solid var(--color-settings-accent);
+  outline-offset: 3px;
+}
+
+.menu-item-wrap.is-active {
+  background: #b9e8dd12;
+  color: var(--color-settings-accent);
+}
+
+.menu-item-icon {
+  width: 19px;
+  height: 19px;
+  opacity: .7;
+}
+
+.active-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  margin-left: auto;
+  background: currentColor;
+  visibility: hidden;
+}
+
+.is-active .active-dot {
+  visibility: visible;
 }
 </style>

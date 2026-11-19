@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <defs>
+    <linearGradient id="sea" x1="18" y1="12" x2="108" y2="116" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#123B50" offset=""/>
+      <stop offset="1" stop-color="#087F83"/>
+    </linearGradient>
+    <linearGradient id="foam" x1="28" y1="46" x2="99" y2="100" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D9F5ED" offset=""/>
+      <stop offset="1" stop-color="#8DDCD0"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="120" height="120" rx="32" fill="url(#sea)"/>
+  <circle cx="86" cy="34" r="10" fill="#C6F0E4"/>
+  <path d="M20 67.5C31 55.8 42.8 55.8 53.8 67.5C64.8 79.2 76.6 79.2 87.6 67.5C94.2 60.5 101.1 58.2 108 61.2" stroke="url(#foam)" stroke-width="7" stroke-linecap="round"/>
+  <path d="M20 86.5C31 74.8 42.8 74.8 53.8 86.5C64.8 98.2 76.6 98.2 87.6 86.5C94.2 79.5 101.1 77.2 108 80.2" stroke="#70C9C0" stroke-width="7" stroke-linecap="round"/>
+</svg>
